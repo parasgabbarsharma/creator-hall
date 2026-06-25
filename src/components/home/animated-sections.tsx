@@ -190,10 +190,10 @@ export function SubGoal({ subscriberCount }: { subscriberCount: string }) {
 // 9. Gear Grid
 export function GearGrid() {
   const gear = [
-    { name: "Sony A7S III", type: "Main Camera" },
-    { name: "Shure SM7B", type: "Microphone" },
-    { name: "Aputure 120D", type: "Lighting" },
-    { name: "MacBook Pro M3", type: "Editing" }
+    { name: "iPhone 16 Pro Max", type: "Main Camera" },
+    { name: "DJI Mic", type: "Wireless Audio" },
+    { name: "Natural & Home Lighting", type: "Lighting" },
+    { name: "CapCut & Filmora", type: "Post-Production" }
   ];
 
   return (
