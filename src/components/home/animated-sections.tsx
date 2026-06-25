@@ -309,7 +309,7 @@ export function AboutChannelSection() {
       <div className="text-center mb-16">
         <h2 className="text-4xl font-heading font-bold mb-4 tracking-tight">Kahaani Gabbar Ki</h2>
         <p className="text-lg text-muted max-w-2xl mx-auto">
-          Zameen se judi comedy, doston wali baatein aur asli zindagi ke kisse. Yahan koi banawati acting nahi hoti, bas apna wahi MP wala swag aur relatable situations hoti hain jo aapko bolne par majboor kar dengi - "Bhai, ye toh bilkul mere dost jaisa hai!" 😂
+          Zameen se judi comedy, doston wali baatein aur asli zindagi ke kisse. Yahan koi banawati acting nahi hoti, bas apna wahi MP wala swag aur relatable situations hoti hain jo aapko bolne par majboor kar dengi - &quot;Bhai, ye toh bilkul mere dost jaisa hai!&quot; 😂
         </p>
       </div>
       <div className="grid md:grid-cols-2 gap-6">
