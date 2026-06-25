@@ -2,7 +2,7 @@
 
 import { motion, useInView } from "framer-motion";
 import { useRef, useState } from "react";
-import { YouTubeIcon, InstagramIcon, BoltIcon } from "@/components/ui/icons";
+import { YouTubeIcon, BoltIcon } from "@/components/ui/icons";
 import { Button } from "@/components/ui/button";
 
 // 1. FadeInView Wrapper
