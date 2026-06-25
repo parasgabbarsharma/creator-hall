@@ -8,7 +8,7 @@ import { VideoCard } from "@/components/video/video-card";
 import { Video } from "@prisma/client";
 import { Button } from "@/components/ui/button";
 import { YouTubeIcon, InstagramIcon, BoltIcon, SearchOffIcon, PlayIcon } from "@/components/ui/icons";
-import { StatsSection, ScrollingMarquee, Testimonials, ConnectCTA, FadeInView, HeroMeshBackground, FAQSection, SubGoal, GearGrid } from "./animated-sections";
+import { StatsSection, ScrollingMarquee, Testimonials, ConnectCTA, FadeInView, HeroMeshBackground, FAQSection, SubGoal, GearGrid, ConsultingSection } from "./animated-sections";
 
 interface HomeClientProps {
   youtubeLong: Video[];
@@ -168,6 +168,7 @@ export function HomeClient({
       {!searchQuery && <Testimonials />}
       {!searchQuery && <FAQSection />}
       {!searchQuery && <GearGrid />}
+      {!searchQuery && <ConsultingSection />}
 
       {searchQuery && (
         <h1 className="text-2xl font-bold text-foreground mt-8 mb-8 border-b border-border pb-4">

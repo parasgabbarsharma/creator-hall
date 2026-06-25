@@ -11,6 +11,9 @@ import { LinkIcon } from "@/components/ui/icons";
 
 export function AdminVideoForm() {
   const [url, setUrl] = useState("");
+  const [title, setTitle] = useState("");
+  const [thumbnail, setThumbnail] = useState("");
+  const [platformInput, setPlatformInput] = useState<"YOUTUBE" | "INSTAGRAM">("YOUTUBE");
   const [loading, setLoading] = useState(false);
   const router = useRouter();
   const toast = useToast();
@@ -24,8 +27,8 @@ export function AdminVideoForm() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    if (!platform) {
-      toast.error("Enter a valid YouTube or Instagram URL.");
+    if (!url || !title || !thumbnail) {
+      toast.error("Please fill in all fields.");
       return;
     }
 
@@ -35,7 +38,7 @@ export function AdminVideoForm() {
       const response = await fetch("/api/videos", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ url }),
+        body: JSON.stringify({ url, title, thumbnail, platform: platformInput }),
       });
 
       const data = await response.json();
@@ -45,6 +48,8 @@ export function AdminVideoForm() {
       }
 
       setUrl("");
+      setTitle("");
+      setThumbnail("");
       toast.success("Content added successfully!");
       router.refresh();
     } catch (err) {
@@ -64,11 +69,32 @@ export function AdminVideoForm() {
         required
       />
 
-      {platform && (
-        <div className="flex items-center gap-2 mt-1">
-          <Badge variant="accent">Detected: {platform}</Badge>
-        </div>
-      )}
+      <div className="flex gap-4">
+        <label className="flex items-center gap-2 text-sm cursor-pointer">
+          <input type="radio" name="platform" checked={platformInput === "YOUTUBE"} onChange={() => setPlatformInput("YOUTUBE")} />
+          YouTube
+        </label>
+        <label className="flex items-center gap-2 text-sm cursor-pointer">
+          <input type="radio" name="platform" checked={platformInput === "INSTAGRAM"} onChange={() => setPlatformInput("INSTAGRAM")} />
+          Instagram
+        </label>
+      </div>
+
+      <Input
+        label="Video Title"
+        placeholder="Enter a catchy title..."
+        value={title}
+        onChange={(e) => setTitle(e.target.value)}
+        required
+      />
+
+      <Input
+        label="Thumbnail URL"
+        placeholder="https://example.com/image.jpg"
+        value={thumbnail}
+        onChange={(e) => setThumbnail(e.target.value)}
+        required
+      />
 
       <Button type="submit" disabled={loading} className="w-full mt-2">
         <LinkIcon size={18} />

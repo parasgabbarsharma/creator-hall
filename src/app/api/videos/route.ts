@@ -1,8 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/db";
 import { isAuthenticated } from "@/lib/auth";
-import { fetchYouTubeMetadata } from "@/lib/youtube";
-import { fetchInstagramMetadata } from "@/lib/instagram";
 import { parseSupportedVideoUrl } from "@/lib/video-url";
 import {
   assertSameOrigin,
@@ -58,37 +56,19 @@ export async function POST(request: NextRequest) {
     await rateLimit(`video:create:${getClientIp(request)}`, { limit: 20, windowMs: 60_000 });
 
     const body = await request.json();
-    const { url } = body;
+    const { url, title, thumbnail, platform: bodyPlatform } = body;
 
     const validatedUrl = validateUrl(url);
-
     const parsed = parseSupportedVideoUrl(validatedUrl);
-    let platform: "YOUTUBE" | "INSTAGRAM";
-    let metadata: {
-      title: string;
-      thumbnail: string;
-      duration?: string;
-      creatorName?: string;
-      creatorAvatar?: string;
-    };
-
-    if (parsed.platform === "YOUTUBE") {
-      platform = "YOUTUBE";
-      metadata = await fetchYouTubeMetadata(parsed.canonicalUrl);
-    } else {
-      platform = "INSTAGRAM";
-      metadata = await fetchInstagramMetadata(parsed.canonicalUrl);
-    }
+    const platform = bodyPlatform || parsed.platform;
 
     const video = await prisma.video.create({
       data: {
         url: parsed.canonicalUrl,
         platform,
-        title: metadata.title,
-        thumbnail: metadata.thumbnail,
-        duration: metadata.duration,
-        creatorName: metadata.creatorName,
-        creatorAvatar: metadata.creatorAvatar,
+        title,
+        thumbnail,
+        creatorName: "Paras Sharma",
         published: true,
       },
     });
