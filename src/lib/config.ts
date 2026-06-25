@@ -1,11 +1,11 @@
-export const SITE_NAME = "CreatorHall";
+export const SITE_NAME = "Paras Gabbar Sharma";
 export const SITE_DESCRIPTION =
-  "Content aggregation platform for creators";
+  "Desi comedy, relatable storytelling, and daily vlogs by Paras Gabbar Sharma.";
 
 export const CREATOR_NAME = "Paras Sharma";
 export const CREATOR_NICKNAME = "Gabbar";
 export const CREATOR_BIO =
-  "Content creator. Storyteller. Making people laugh one short at a time.";
+  "Desi comedy and storytelling that will definitely make you laugh. Naye shorts har din!";
 
 export const SOCIAL_LINKS = [
   {

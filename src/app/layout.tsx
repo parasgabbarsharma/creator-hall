@@ -8,10 +8,10 @@ const jakarta = Plus_Jakarta_Sans({ subsets: ["latin"], variable: "--font-jakart
 
 export const metadata: Metadata = {
   title: {
-    default: "CreatorHall",
-    template: "%s | CreatorHall",
+    default: "Paras Gabbar Sharma | Official Website",
+    template: "%s | Paras Gabbar Sharma",
   },
-  description: "Content aggregation platform for creators. Comedy, stories, and entertainment.",
+  description: "Desi comedy, relatable storytelling, and daily vlogs by Paras Gabbar Sharma. Official content hub.",
 };
 
 export default function RootLayout({

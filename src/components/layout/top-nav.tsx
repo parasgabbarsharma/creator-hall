@@ -54,7 +54,7 @@ export function TopNavBar() {
             <div className="w-8 h-8 rounded-full bg-accent flex items-center justify-center text-white shadow-sm transition-transform duration-300 group-hover:scale-105">
               <PlayIcon size={14} className="ml-0.5" />
             </div>
-            <span className="text-xl font-heading font-bold tracking-tight text-foreground">CreatorHall</span>
+            <span className="text-xl font-heading font-bold tracking-tight text-foreground">Paras Sharma</span>
           </Link>
 
           <div className="hidden md:flex items-center gap-6">
