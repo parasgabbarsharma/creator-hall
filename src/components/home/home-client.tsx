@@ -8,6 +8,7 @@ import { VideoCard } from "@/components/video/video-card";
 import { Video } from "@prisma/client";
 import { Button } from "@/components/ui/button";
 import { YouTubeIcon, InstagramIcon, BoltIcon, SearchOffIcon, PlayIcon } from "@/components/ui/icons";
+import { FloatingBackground, StatsSection, ScrollingMarquee, Testimonials, ConnectCTA, FadeInView } from "./animated-sections";
 
 interface HomeClientProps {
   youtubeLong: Video[];
@@ -81,10 +82,12 @@ export function HomeClient({
   const showLoadMore = (activeTab === "youtube" && hasMoreYt) || (activeTab === "instagram" && hasMoreIg) || (hasMoreYt || hasMoreIg);
 
   return (
-    <div>
+    <div className="relative overflow-hidden">
+      <FloatingBackground />
+      
       {!searchQuery && (
-        <div className="mt-12 mb-16 px-4">
-          <div className="max-w-2xl mx-auto flex flex-col items-center text-center">
+        <FadeInView delay={0.1} className="mt-20 mb-16 px-4">
+          <div className="max-w-3xl mx-auto flex flex-col items-center text-center">
             <motion.div 
               initial={{ scale: 0, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
@@ -149,8 +152,12 @@ export function HomeClient({
               </motion.a>
             </motion.div>
           </div>
-        </div>
+        </FadeInView>
       )}
+
+      {!searchQuery && <StatsSection />}
+      {!searchQuery && <ScrollingMarquee />}
+      {!searchQuery && <Testimonials />}
 
       {searchQuery && (
         <h1 className="text-2xl font-bold text-foreground mt-8 mb-8 border-b border-border pb-4">
@@ -205,6 +212,8 @@ export function HomeClient({
           </div>
         )}
       </div>
+
+      {!searchQuery && <ConnectCTA />}
     </div>
   );
 }
