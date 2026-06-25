@@ -8,7 +8,7 @@ import { VideoCard } from "@/components/video/video-card";
 import { Video } from "@prisma/client";
 import { Button } from "@/components/ui/button";
 import { YouTubeIcon, InstagramIcon, BoltIcon, SearchOffIcon, PlayIcon } from "@/components/ui/icons";
-import { StatsSection, ScrollingMarquee, Testimonials, ConnectCTA, FadeInView, HeroMeshBackground, FAQSection, SubGoal, GearGrid, ConsultingSection } from "./animated-sections";
+import { StatsSection, ScrollingMarquee, Testimonials, ConnectCTA, FadeInView, HeroMeshBackground, FAQSection, SubGoal, GearGrid, AboutChannelSection } from "./animated-sections";
 
 interface HomeClientProps {
   youtubeLong: Video[];
@@ -133,7 +133,7 @@ export function HomeClient({
               transition={{ duration: 0.6, delay: 0.3, ease: "easeOut" }}
               className="text-lg md:text-xl text-muted mt-4 max-w-lg mx-auto leading-relaxed"
             >
-              Desi comedy and storytelling that will definitely make you laugh. Naye shorts har din!
+              Desi comedy, MP 20/21 ka swag aur aisi relatable kahaniyan jahan doston ki hawabaazi hamesha ulti padti hai! 😂 Naye shorts har din!
             </motion.p>
             
             <motion.div 
@@ -168,7 +168,7 @@ export function HomeClient({
       {!searchQuery && <Testimonials />}
       {!searchQuery && <FAQSection />}
       {!searchQuery && <GearGrid />}
-      {!searchQuery && <ConsultingSection />}
+      {!searchQuery && <AboutChannelSection />}
 
       {searchQuery && (
         <h1 className="text-2xl font-bold text-foreground mt-8 mb-8 border-b border-border pb-4">

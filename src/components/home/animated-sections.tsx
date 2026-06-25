@@ -279,50 +279,47 @@ export function ConnectCTA() {
   );
 }
 
-// 10. Consulting Services
-export function ConsultingSection() {
-  const services = [
+// 10. About Channel
+export function AboutChannelSection() {
+  const pillars = [
     {
-      title: "Content Strategy & Performance",
-      titleHi: "Kaisi honi chahiye aapki strategy?",
-      desc: "Hum aapke channel ke best videos ko analyze karke aapki core strategy aur growth pillars decide karenge. Pata karenge ki kya chal raha hai aur kya nahi chal raha.",
+      title: "Desi Swag vs Reality",
+      titleHi: "Dikhawa Banam Haqeeqat",
+      desc: "Jaise bhai ka systumm hang hota hai na! Shuru me cycle wale ko koi nahi dekhta, par bullet dekh ke sab salaam thokte hain. End ka twist hamesha reality check deta hai.",
     },
     {
-      title: "Deep Video Breakdown",
-      titleHi: "Video ki Gehrai me",
-      desc: "Aapke scripts, hooks, aur video structure ko detail me samjhenge taaki audience retention badhe aur log video chhod kar na jayein.",
+      title: "Hyper-Realistic Comedy",
+      titleHi: "Doston Ki Hawabaazi",
+      desc: "Wo doston ke beech ki zabardasti ki hawabaazi, aur fir uska ulta pad jana. Bilkul waisa hi mahaul jaisa aapke apne doston ke group me hota hai.",
     },
     {
-      title: "Title & Thumbnail Optimization",
-      titleHi: "Clicks Kaise Badhayein?",
-      desc: "Best CTR laane ke liye titles aur thumbnails ko optimize karenge. Pata lagayenge ki konsa hook sabse zyada attention grab karta hai.",
+      title: "Raw & Authentic Vibe",
+      titleHi: "MP 20/21 Ka Swag",
+      desc: "Koi nakli studio nahi. Gali-nukkad, MP ki passing wali gaadiyan aur ekdum desi bolchal. Tabhi toh har video itni relatable lagti hai.",
     },
     {
-      title: "Audience Sentiment",
-      titleHi: "Audience Kya Chahti Hai?",
-      desc: "Comments aur feedback ko padh kar samjhenge ki aapke viewers ke pain points kya hain aur unhe aage konsa content dekhna hai.",
+      title: "Immediate Action",
+      titleHi: "No Boring Intros",
+      desc: "Video shuru hote hi seedha action! 'Abe bhai kya ho gaya isko?'. Humari har 15-30 second ki video aapko aisi rokegi ki aap loop pe dekhoge.",
     }
   ];
 
   return (
     <FadeInView className="px-4 my-32 max-w-6xl mx-auto">
       <div className="text-center mb-16">
-        <h2 className="text-4xl font-heading font-bold mb-4 tracking-tight">YouTube Channel Audit & Growth</h2>
-        <p className="text-lg text-muted max-w-2xl mx-auto">Kya aap bhi apne YouTube channel ko grow karna chahte hain? Chaliye saath mil kar aapke channel ko analyze karein aur ek solid growth strategy banayein.</p>
+        <h2 className="text-4xl font-heading font-bold mb-4 tracking-tight">Kahaani Gabbar Ki</h2>
+        <p className="text-lg text-muted max-w-2xl mx-auto">
+          Zameen se judi comedy, doston wali baatein aur asli zindagi ke kisse. Yahan koi banawati acting nahi hoti, bas apna wahi MP wala swag aur relatable situations hoti hain jo aapko bolne par majboor kar dengi - "Bhai, ye toh bilkul mere dost jaisa hai!" 😂
+        </p>
       </div>
       <div className="grid md:grid-cols-2 gap-6">
-        {services.map((s, i) => (
-          <div key={i} className="p-8 rounded-3xl bg-surface border border-border hover:border-accent/50 transition-colors shadow-sm hover:shadow-md">
-            <h3 className="text-xl font-heading font-bold text-foreground mb-1">{s.title}</h3>
-            <h4 className="text-sm font-semibold text-accent mb-4">{s.titleHi}</h4>
-            <p className="text-muted leading-relaxed">{s.desc}</p>
+        {pillars.map((p, i) => (
+          <div key={i} className="p-8 rounded-3xl bg-surface border border-border hover:border-accent/50 transition-colors shadow-sm hover:shadow-md group">
+            <h3 className="text-xl font-heading font-bold text-foreground mb-1 group-hover:text-accent transition-colors">{p.title}</h3>
+            <h4 className="text-sm font-semibold text-accent/80 mb-4">{p.titleHi}</h4>
+            <p className="text-muted leading-relaxed">{p.desc}</p>
           </div>
         ))}
-      </div>
-      <div className="mt-12 text-center">
-        <a href="mailto:contact@parassharma.com">
-          <Button size="lg" className="rounded-full px-8 font-semibold">Book an Audit Now</Button>
-        </a>
       </div>
     </FadeInView>
   );
