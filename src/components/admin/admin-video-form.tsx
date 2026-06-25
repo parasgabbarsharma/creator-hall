@@ -2,11 +2,10 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { isValidYouTubeUrl, isValidInstagramUrl } from "@/lib/utils";
+
 import { useToast } from "@/components/ui/toast";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Badge } from "@/components/ui/badge";
 import { LinkIcon } from "@/components/ui/icons";
 
 export function AdminVideoForm() {
@@ -17,12 +16,6 @@ export function AdminVideoForm() {
   const [loading, setLoading] = useState(false);
   const router = useRouter();
   const toast = useToast();
-
-  const platform = isValidYouTubeUrl(url)
-    ? "YouTube"
-    : isValidInstagramUrl(url)
-    ? "Instagram"
-    : null;
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
