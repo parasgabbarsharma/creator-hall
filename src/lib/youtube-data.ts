@@ -15,25 +15,29 @@ function getYouTubeClient() {
   };
 }
 
-export async function getLiveChannelAvatar(): Promise<{ avatar: string | null; name: string | null }> {
+export async function getLiveChannelStats(): Promise<{ avatar: string | null; name: string | null; subscriberCount: string; viewCount: string; videoCount: string }> {
   try {
     const { youtube, channelId } = getYouTubeClient();
-    if (!channelId || channelId === "YOUR_CHANNEL_ID_HERE") return { avatar: null, name: null };
+    if (!channelId || channelId === "YOUR_CHANNEL_ID_HERE") return { avatar: null, name: null, subscriberCount: "0", viewCount: "0", videoCount: "0" };
 
     const channelRes = await youtube.channels.list({
-      part: ["snippet"],
+      part: ["snippet", "statistics"],
       id: [channelId],
     });
 
     const channel = channelRes.data.items?.[0];
-    if (!channel) return { avatar: null, name: null };
+    if (!channel) return { avatar: null, name: null, subscriberCount: "0", viewCount: "0", videoCount: "0" };
 
     const avatar = channel.snippet?.thumbnails?.high?.url || channel.snippet?.thumbnails?.default?.url || null;
     const name = channel.snippet?.title || null;
     
-    return { avatar, name };
+    const subscriberCount = channel.statistics?.subscriberCount || "0";
+    const viewCount = channel.statistics?.viewCount || "0";
+    const videoCount = channel.statistics?.videoCount || "0";
+
+    return { avatar, name, subscriberCount, viewCount, videoCount };
   } catch {
-    return { avatar: null, name: null };
+    return { avatar: null, name: null, subscriberCount: "0", viewCount: "0", videoCount: "0" };
   }
 }
 

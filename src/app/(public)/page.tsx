@@ -3,7 +3,7 @@ import { HomeClient } from "@/components/home/home-client";
 import { Video } from "@prisma/client";
 import { DEFAULT_PAGE_SIZE, CREATOR_NAME, CREATOR_NICKNAME } from "@/lib/config";
 import { isYouTubeShortUrl } from "@/lib/video-url";
-import { getLiveChannelAvatar } from "@/lib/youtube-data";
+import { getLiveChannelStats } from "@/lib/youtube-data";
 import { unstable_cache } from "next/cache";
 
 export const dynamic = "force-dynamic";
@@ -72,10 +72,10 @@ export default async function HomePage({ searchParams }: HomePageProps) {
     console.error("Database connection failed. Falling back to empty state.", error);
   }
 
-  // Fetch live YouTube profile picture to fulfill the request
-  const liveAvatar = await getLiveChannelAvatar();
-  const avatarToUse = liveAvatar.avatar || channelInfo?.creatorAvatar || null;
-  const nameToUse = liveAvatar.name || channelInfo?.creatorName || `${CREATOR_NAME} ${CREATOR_NICKNAME}`;
+  // Fetch live YouTube stats to fulfill the request
+  const liveStats = await getLiveChannelStats();
+  const avatarToUse = liveStats.avatar || channelInfo?.creatorAvatar || null;
+  const nameToUse = liveStats.name || channelInfo?.creatorName || `${CREATOR_NAME} ${CREATOR_NICKNAME}`;
 
   const hasMoreYt = rawYoutubeVideos.length > DEFAULT_PAGE_SIZE;
   const itemsYt = hasMoreYt ? rawYoutubeVideos.slice(0, DEFAULT_PAGE_SIZE) : rawYoutubeVideos;
@@ -108,6 +108,10 @@ export default async function HomePage({ searchParams }: HomePageProps) {
       nextIgCursor={nextIgCursor}
       ytCursor={ytCursor}
       igCursor={igCursor}
+
+      subscriberCount={liveStats.subscriberCount}
+      viewCount={liveStats.viewCount}
+      videoCount={liveStats.videoCount}
     />
   );
 }

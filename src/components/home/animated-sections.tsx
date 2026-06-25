@@ -23,6 +23,14 @@ export function FadeInView({ children, delay = 0, className = "" }: { children: 
   );
 }
 
+// Formatter
+function formatCompactNumber(number: number | string) {
+  const n = typeof number === "string" ? parseInt(number, 10) : number;
+  if (isNaN(n) || n === 0) return "0";
+  const formatter = Intl.NumberFormat("en", { notation: "compact", maximumFractionDigits: 1 });
+  return formatter.format(n);
+}
+
 // 2. Stats Counter
 function Counter({ value, label }: { value: string; label: string }) {
   return (
@@ -41,15 +49,14 @@ function Counter({ value, label }: { value: string; label: string }) {
   );
 }
 
-export function StatsSection() {
+export function StatsSection({ subscriberCount, viewCount, videoCount }: { subscriberCount: string, viewCount: string, videoCount: string }) {
   return (
     <FadeInView className="px-4 max-w-7xl mx-auto">
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6 my-24 relative">
+      <div className="grid grid-cols-2 md:grid-cols-3 gap-4 md:gap-6 my-24 relative">
         <div className="absolute inset-0 bg-accent/5 blur-3xl rounded-full -z-10" />
-        <Counter value="1M+" label="Subscribers" />
-        <Counter value="50M+" label="Total Views" />
-        <Counter value="500+" label="Videos" />
-        <Counter value="100K+" label="Followers" />
+        <Counter value={formatCompactNumber(subscriberCount)} label="Subscribers" />
+        <Counter value={formatCompactNumber(viewCount)} label="Total Views" />
+        <Counter value={formatCompactNumber(videoCount)} label="Videos" />
       </div>
     </FadeInView>
   );
@@ -138,26 +145,37 @@ export function FAQSection() {
 }
 
 // 8. Live Sub Goal
-export function SubGoal() {
+export function SubGoal({ subscriberCount }: { subscriberCount: string }) {
+  const subs = parseInt(subscriberCount, 10) || 0;
+  
+  // Calculate next dynamic goal
+  let goal = 1000;
+  if (subs >= 1000000) goal = Math.ceil((subs + 1) / 1000000) * 1000000;
+  else if (subs >= 100000) goal = Math.ceil((subs + 1) / 100000) * 100000;
+  else if (subs >= 10000) goal = Math.ceil((subs + 1) / 10000) * 10000;
+  else goal = Math.ceil((subs + 1) / 1000) * 1000;
+
+  const percentage = Math.min(100, Math.max(0, (subs / goal) * 100));
+
   return (
     <FadeInView className="px-4 max-w-4xl mx-auto my-16">
       <div className="p-8 rounded-3xl bg-foreground text-background flex flex-col md:flex-row items-center justify-between gap-8 shadow-xl">
         <div>
           <h3 className="text-2xl font-bold font-heading mb-2 flex items-center gap-3">
             <span className="w-3 h-3 rounded-full bg-red-500 animate-pulse" />
-            Road to 2 Million
+            Road to {formatCompactNumber(goal)}
           </h3>
           <p className="text-[#a3a3a3]">Join the journey and be part of the history.</p>
         </div>
         <div className="flex-1 w-full max-w-md">
           <div className="flex justify-between text-sm font-semibold mb-2 text-[#e5e5e5]">
-            <span>1.4M</span>
-            <span>2.0M</span>
+            <span>{formatCompactNumber(subs)}</span>
+            <span>{formatCompactNumber(goal)}</span>
           </div>
           <div className="h-3 bg-[#404040] rounded-full overflow-hidden">
             <motion.div 
               initial={{ width: 0 }} 
-              whileInView={{ width: "70%" }} 
+              whileInView={{ width: `${percentage}%` }} 
               viewport={{ once: true }}
               transition={{ duration: 1.5, ease: "easeOut" }}
               className="h-full bg-accent rounded-full" 

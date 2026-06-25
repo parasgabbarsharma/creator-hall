@@ -26,6 +26,10 @@ interface HomeClientProps {
   nextIgCursor?: string | null;
   ytCursor?: string;
   igCursor?: string;
+
+  subscriberCount?: string;
+  viewCount?: string;
+  videoCount?: string;
 }
 
 export function HomeClient({
@@ -44,6 +48,9 @@ export function HomeClient({
   nextIgCursor,
   ytCursor,
   igCursor,
+  subscriberCount = "0",
+  viewCount = "0",
+  videoCount = "0",
 }: HomeClientProps) {
   const initialTab = defaultTab === "instagram" ? "instagram" : "youtube";
   const [activeTab, setActiveTab] = useState<string>(initialTab);
@@ -155,8 +162,8 @@ export function HomeClient({
         </FadeInView>
       )}
 
-      {!searchQuery && <SubGoal />}
-      {!searchQuery && <StatsSection />}
+      {!searchQuery && <SubGoal subscriberCount={subscriberCount} />}
+      {!searchQuery && <StatsSection subscriberCount={subscriberCount} viewCount={viewCount} videoCount={videoCount} />}
       {!searchQuery && <ScrollingMarquee />}
       {!searchQuery && <Testimonials />}
       {!searchQuery && <FAQSection />}
