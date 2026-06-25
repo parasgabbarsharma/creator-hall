@@ -35,12 +35,6 @@ export default async function HomePage({ searchParams }: HomePageProps) {
       : {}),
   };
 
-  const ytWhere = { ...baseWhere, platform: "YOUTUBE" as const };
-  const igWhere = { ...baseWhere, platform: "INSTAGRAM" as const };
-
-  const ytCursorFilter = ytCursor ? { cursor: { id: ytCursor }, skip: 1 } : {};
-  const igCursorFilter = igCursor ? { cursor: { id: igCursor }, skip: 1 } : {};
-
   let rawYoutubeVideos: Video[] = [];
   let rawInstagramVideos: Video[] = [];
   let channelInfo: { creatorAvatar: string | null; creatorName: string | null } | null = null;
@@ -49,14 +43,14 @@ export default async function HomePage({ searchParams }: HomePageProps) {
   try {
     const results = await Promise.all([
       prisma.video.findMany({
-        where: ytWhere,
-        ...ytCursorFilter,
+        where: { ...baseWhere, platform: "YOUTUBE" as const },
+        ...(ytCursor ? { cursor: { id: ytCursor }, skip: 1 } : {}),
         orderBy: { createdAt: "desc" },
         take: DEFAULT_PAGE_SIZE + 1,
       }),
       prisma.video.findMany({
-        where: igWhere,
-        ...igCursorFilter,
+        where: { ...baseWhere, platform: "INSTAGRAM" as const },
+        ...(igCursor ? { cursor: { id: igCursor }, skip: 1 } : {}),
         orderBy: { createdAt: "desc" },
         take: DEFAULT_PAGE_SIZE + 1,
       }),

@@ -20,12 +20,10 @@ export async function GET(request: NextRequest) {
       searchParams.get("cursor")
     );
 
-    const cursorFilter = cursor ? { cursor: { id: cursor }, skip: 1 } : {};
-
     const [videos, total] = await Promise.all([
       prisma.video.findMany({
         where: { published: true },
-        ...cursorFilter,
+        ...(cursor ? { cursor: { id: cursor }, skip: 1 } : {}),
         orderBy: { createdAt: "desc" },
         take: limit + 1,
       }),
