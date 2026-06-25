@@ -242,6 +242,7 @@ export async function getLiveVideos(limit = 50) {
       { next: { revalidate: 3600 } }
     );
     const playlistData = await playlistRes.json();
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const videoIds = (playlistData.items || []).map((i: any) => i.contentDetails?.videoId).filter(Boolean);
 
     if (videoIds.length === 0) return [];
@@ -252,6 +253,7 @@ export async function getLiveVideos(limit = 50) {
     );
     const videosData = await videosRes.json();
 
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     return (videosData.items || []).map((v: any) => {
       const durationIso = v.contentDetails?.duration || "PT0S";
       const isShort = isDurationLessThan60s(durationIso);

@@ -21,7 +21,6 @@ const getCachedVideoCount = unstable_cache(
 export default async function HomePage({ searchParams }: HomePageProps) {
   const { q, tab, ytCursor, igCursor } = await searchParams;
   const searchQuery = q?.trim().slice(0, 120);
-  const activeTab = tab || "youtube";
 
   const baseWhere = {
     published: true,
