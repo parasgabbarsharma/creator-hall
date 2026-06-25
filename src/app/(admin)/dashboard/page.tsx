@@ -5,20 +5,26 @@ import { Card, CardBody, CardHeader } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Video } from "@prisma/client";
 import { ADMIN_PAGE_SIZE } from "@/lib/config";
+import Link from "next/link";
+import { cn } from "@/lib/utils";
 
 export const dynamic = "force-dynamic";
 
 interface DashboardPageProps {
-  searchParams: Promise<{ cursor?: string }>;
+  searchParams: Promise<{ cursor?: string; tab?: string }>;
 }
 
 export default async function DashboardPage({ searchParams }: DashboardPageProps) {
-  const { cursor } = await searchParams;
+  const { cursor, tab } = await searchParams;
+  const activeTab = tab || "all";
+  
   const cursorFilter = cursor ? { id: { lt: cursor } } : {};
+  const platformFilter = activeTab === "youtube" ? { platform: "YOUTUBE" as const } : activeTab === "instagram" ? { platform: "INSTAGRAM" as const } : {};
+  const whereFilter = { ...cursorFilter, ...platformFilter };
 
   const [rawVideos, totalCount] = await Promise.all([
     prisma.video.findMany({
-      where: { ...cursorFilter },
+      where: whereFilter,
       select: {
         id: true,
         url: true,
@@ -36,7 +42,7 @@ export default async function DashboardPage({ searchParams }: DashboardPageProps
       orderBy: { createdAt: "desc" },
       take: ADMIN_PAGE_SIZE + 1,
     }),
-    prisma.video.count(),
+    prisma.video.count({ where: platformFilter }),
   ]);
 
   const hasMore = rawVideos.length > ADMIN_PAGE_SIZE;
@@ -63,12 +69,17 @@ export default async function DashboardPage({ searchParams }: DashboardPageProps
         </Card>
 
         <Card className="lg:col-span-8">
-          <CardHeader className="flex flex-row justify-between items-center">
+          <CardHeader className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
             <h3 className="text-lg font-semibold text-foreground">Recent Content</h3>
+            <div className="flex bg-surface rounded-lg p-1 border border-border">
+              <Link href="/admin/dashboard?tab=all" className={cn("px-4 py-1.5 text-sm font-medium rounded-md transition-colors", activeTab === "all" ? "bg-white text-foreground shadow-sm" : "text-muted hover:text-foreground")}>All</Link>
+              <Link href="/admin/dashboard?tab=youtube" className={cn("px-4 py-1.5 text-sm font-medium rounded-md transition-colors", activeTab === "youtube" ? "bg-white text-foreground shadow-sm" : "text-muted hover:text-foreground")}>YouTube</Link>
+              <Link href="/admin/dashboard?tab=instagram" className={cn("px-4 py-1.5 text-sm font-medium rounded-md transition-colors", activeTab === "instagram" ? "bg-white text-foreground shadow-sm" : "text-muted hover:text-foreground")}>Instagram</Link>
+            </div>
             <Badge variant="default">{totalCount} total</Badge>
           </CardHeader>
           <CardBody>
-            <VideoList videos={videos} hasMore={hasMore} nextCursor={nextCursor} />
+            <VideoList videos={videos} hasMore={hasMore} nextCursor={nextCursor} activeTab={activeTab} />
           </CardBody>
         </Card>
       </div>

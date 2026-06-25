@@ -15,9 +15,10 @@ interface VideoListProps {
   videos: Video[];
   hasMore?: boolean;
   nextCursor?: string | null;
+  activeTab?: string;
 }
 
-export function VideoList({ videos, hasMore = false, nextCursor }: VideoListProps) {
+export function VideoList({ videos, hasMore = false, nextCursor, activeTab = "all" }: VideoListProps) {
   const [items, setItems] = useState(videos);
   const [deleting, setDeleting] = useState<string | null>(null);
   const [toggling, setToggling] = useState<string | null>(null);
@@ -174,7 +175,7 @@ export function VideoList({ videos, hasMore = false, nextCursor }: VideoListProp
 
       {hasMore && nextCursor && (
         <div className="flex justify-center pt-4">
-          <Link href={`/dashboard?cursor=${nextCursor}`}>
+          <Link href={`/admin/dashboard?cursor=${nextCursor}&tab=${activeTab}`}>
             <Button variant="secondary">Load More</Button>
           </Link>
         </div>
