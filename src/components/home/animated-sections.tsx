@@ -1,7 +1,7 @@
 "use client";
 
 import { motion, useInView } from "framer-motion";
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import { YouTubeIcon, InstagramIcon, BoltIcon } from "@/components/ui/icons";
 import { Button } from "@/components/ui/button";
 
@@ -87,30 +87,116 @@ export function ScrollingMarquee() {
   );
 }
 
-// 4. Floating Elements Background
-export function FloatingBackground() {
+// 4. Hero Mesh Background
+export function HeroMeshBackground() {
   return (
     <div className="absolute inset-0 overflow-hidden pointer-events-none -z-10">
-      <motion.div
-        animate={{ y: [0, -30, 0], rotate: [0, 15, -15, 0] }}
-        transition={{ duration: 7, repeat: Infinity, ease: "easeInOut" }}
-        className="absolute top-[20%] left-[10%] opacity-10 text-accent"
-      >
-        <YouTubeIcon size={80} />
-      </motion.div>
-      <motion.div
-        animate={{ y: [0, 40, 0], rotate: [0, -20, 10, 0] }}
-        transition={{ duration: 9, repeat: Infinity, ease: "easeInOut", delay: 1 }}
-        className="absolute top-[50%] right-[10%] opacity-10 text-pink-600"
-      >
-        <InstagramIcon size={100} />
-      </motion.div>
-      <motion.div
-        animate={{ scale: [1, 1.3, 1], opacity: [0.03, 0.08, 0.03] }}
-        transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}
-        className="absolute top-[10%] right-[20%] w-[500px] h-[500px] bg-accent rounded-full blur-[120px]"
-      />
+      <div className="absolute -top-40 -right-40 w-96 h-96 bg-accent/10 rounded-full blur-[100px]" />
+      <div className="absolute top-40 -left-20 w-72 h-72 bg-pink-600/5 rounded-full blur-[80px]" />
+      <div className="absolute bottom-0 right-1/4 w-80 h-80 bg-blue-500/5 rounded-full blur-[100px]" />
     </div>
+  );
+}
+
+// 7. FAQ Accordion
+export function FAQSection() {
+  const faqs = [
+    { q: "How often do you upload?", a: "I post new YouTube Shorts every single day, and long-form videos every Sunday!" },
+    { q: "What editing software do you use?", a: "I edit primarily on Adobe Premiere Pro and After Effects for the heavy visuals." },
+    { q: "Do you do brand collaborations?", a: "Yes! For business inquiries, please reach out via the email on my YouTube About page." }
+  ];
+
+  const [open, setOpen] = useState<number | null>(0);
+
+  return (
+    <FadeInView className="px-4 max-w-3xl mx-auto my-32">
+      <h2 className="text-3xl font-heading font-bold text-center mb-12">Frequently Asked Questions</h2>
+      <div className="space-y-4">
+        {faqs.map((faq, i) => (
+          <div key={i} className="border border-border bg-surface rounded-2xl overflow-hidden transition-all hover:border-accent/30">
+            <button 
+              onClick={() => setOpen(open === i ? null : i)}
+              className="w-full text-left p-6 flex justify-between items-center font-semibold text-foreground focus:outline-none"
+            >
+              {faq.q}
+              <motion.span animate={{ rotate: open === i ? 45 : 0 }} className="text-muted">
+                +
+              </motion.span>
+            </button>
+            <motion.div 
+              initial={false} 
+              animate={{ height: open === i ? "auto" : 0, opacity: open === i ? 1 : 0 }} 
+              className="overflow-hidden"
+            >
+              <p className="p-6 pt-0 text-muted leading-relaxed border-t border-border/50">{faq.a}</p>
+            </motion.div>
+          </div>
+        ))}
+      </div>
+    </FadeInView>
+  );
+}
+
+// 8. Live Sub Goal
+export function SubGoal() {
+  return (
+    <FadeInView className="px-4 max-w-4xl mx-auto my-16">
+      <div className="p-8 rounded-3xl bg-foreground text-background flex flex-col md:flex-row items-center justify-between gap-8 shadow-xl">
+        <div>
+          <h3 className="text-2xl font-bold font-heading mb-2 flex items-center gap-3">
+            <span className="w-3 h-3 rounded-full bg-red-500 animate-pulse" />
+            Road to 2 Million
+          </h3>
+          <p className="text-[#a3a3a3]">Join the journey and be part of the history.</p>
+        </div>
+        <div className="flex-1 w-full max-w-md">
+          <div className="flex justify-between text-sm font-semibold mb-2 text-[#e5e5e5]">
+            <span>1.4M</span>
+            <span>2.0M</span>
+          </div>
+          <div className="h-3 bg-[#404040] rounded-full overflow-hidden">
+            <motion.div 
+              initial={{ width: 0 }} 
+              whileInView={{ width: "70%" }} 
+              viewport={{ once: true }}
+              transition={{ duration: 1.5, ease: "easeOut" }}
+              className="h-full bg-accent rounded-full" 
+            />
+          </div>
+        </div>
+      </div>
+    </FadeInView>
+  );
+}
+
+// 9. Gear Grid
+export function GearGrid() {
+  const gear = [
+    { name: "Sony A7S III", type: "Main Camera" },
+    { name: "Shure SM7B", type: "Microphone" },
+    { name: "Aputure 120D", type: "Lighting" },
+    { name: "MacBook Pro M3", type: "Editing" }
+  ];
+
+  return (
+    <FadeInView className="px-4 max-w-6xl mx-auto my-32">
+      <h2 className="text-3xl font-heading font-bold text-center mb-12">The Studio Setup</h2>
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+        {gear.map((item, i) => (
+          <motion.div 
+            key={i}
+            whileHover={{ y: -5 }}
+            className="p-6 bg-surface border border-border rounded-2xl text-center group"
+          >
+            <div className="w-12 h-12 mx-auto bg-background rounded-full flex items-center justify-center mb-4 group-hover:scale-110 transition-transform text-muted">
+              <BoltIcon size={20} />
+            </div>
+            <h4 className="font-bold text-foreground">{item.name}</h4>
+            <p className="text-sm text-muted mt-1">{item.type}</p>
+          </motion.div>
+        ))}
+      </div>
+    </FadeInView>
   );
 }
 

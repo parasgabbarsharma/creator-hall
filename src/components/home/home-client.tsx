@@ -8,7 +8,7 @@ import { VideoCard } from "@/components/video/video-card";
 import { Video } from "@prisma/client";
 import { Button } from "@/components/ui/button";
 import { YouTubeIcon, InstagramIcon, BoltIcon, SearchOffIcon, PlayIcon } from "@/components/ui/icons";
-import { FloatingBackground, StatsSection, ScrollingMarquee, Testimonials, ConnectCTA, FadeInView } from "./animated-sections";
+import { StatsSection, ScrollingMarquee, Testimonials, ConnectCTA, FadeInView, HeroMeshBackground, FAQSection, SubGoal, GearGrid } from "./animated-sections";
 
 interface HomeClientProps {
   youtubeLong: Video[];
@@ -83,7 +83,7 @@ export function HomeClient({
 
   return (
     <div className="relative overflow-hidden">
-      <FloatingBackground />
+      <HeroMeshBackground />
       
       {!searchQuery && (
         <FadeInView delay={0.1} className="mt-20 mb-16 px-4">
@@ -155,9 +155,12 @@ export function HomeClient({
         </FadeInView>
       )}
 
+      {!searchQuery && <SubGoal />}
       {!searchQuery && <StatsSection />}
       {!searchQuery && <ScrollingMarquee />}
       {!searchQuery && <Testimonials />}
+      {!searchQuery && <FAQSection />}
+      {!searchQuery && <GearGrid />}
 
       {searchQuery && (
         <h1 className="text-2xl font-bold text-foreground mt-8 mb-8 border-b border-border pb-4">

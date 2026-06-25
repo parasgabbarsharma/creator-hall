@@ -45,7 +45,7 @@ export function assertSameOrigin(request: Request): void {
     ? new URL(process.env.NEXT_PUBLIC_SITE_URL).host 
     : host;
 
-  if (originHost !== expectedHost) {
+  if (originHost !== expectedHost && originHost !== host) {
     throw new HttpError(403, "Invalid request origin");
   }
 }
