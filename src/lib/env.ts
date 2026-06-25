@@ -25,21 +25,6 @@ function requireStrongSecret(name: string): string {
   return value;
 }
 
-export function getGoogleOAuthEnv() {
-  return {
-    clientId: requireEnv("GOOGLE_CLIENT_ID"),
-    clientSecret: requireEnv("GOOGLE_CLIENT_SECRET"),
-    redirectUri: requireEnv("GOOGLE_REDIRECT_URI"),
-  };
-}
-
-export function getOptionalTokenEncryptionKey(): string | undefined {
-  const key = getEnv("TOKEN_ENCRYPTION_KEY");
-  if (key && key.length < 32) {
-    throw new Error("TOKEN_ENCRYPTION_KEY must be at least 32 characters when provided");
-  }
-  return key;
-}
 
 export function getSessionSecret(): string {
   return requireStrongSecret("SESSION_SECRET");
