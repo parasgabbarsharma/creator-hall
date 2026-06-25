@@ -1,0 +1,46 @@
+name: CI
+on:
+  push:
+    branches: [main, master]
+  pull_request:
+    branches: [main, master]
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: "npm"
+
+      - name: Install Dependencies
+        run: npm ci
+
+      - name: Run Linter
+        run: npm run lint
+
+      - name: Run Type Check
+        run: npm run typecheck
+
+      - name: Run Tests
+        run: npm test
+
+      - name: Build Project
+        run: npm run build
+        env:
+          DATABASE_URL: "postgresql://postgres:postgres@localhost:5432/test_db"
+          ADMIN_PASSWORD_HASH: "$2a$12$thisIsADummyHashForCI"
+          SESSION_SECRET: "12345678901234567890123456789012"
+          CRON_SECRET: "12345678901234567890123456789012"
+          TOKEN_ENCRYPTION_KEY: "12345678901234567890123456789012"
+          GOOGLE_CLIENT_ID: "dummy"
+          GOOGLE_CLIENT_SECRET: "dummy"
+          GOOGLE_REDIRECT_URI: "http://localhost/api/auth/google"
+          YOUTUBE_API_KEY: "dummy"
+          YOUTUBE_CHANNEL_ID: "dummy"
+          NEXT_PUBLIC_SITE_URL: "http://localhost:3000"

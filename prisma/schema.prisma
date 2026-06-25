@@ -1,0 +1,42 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+enum Platform {
+  YOUTUBE
+  INSTAGRAM
+}
+
+model Video {
+  id            String      @id @default(cuid())
+  url           String      @unique
+  platform      Platform
+  title         String
+  description   String      @default("")
+  thumbnail     String
+  createdAt     DateTime    @default(now())
+  published     Boolean     @default(true)
+  creatorAvatar String?
+  creatorName   String?
+  duration      String?
+  tags          String[]    @default([])
+
+  @@index([published, createdAt])
+  @@index([platform, published, createdAt])
+  @@index([url])
+}
+
+model Integration {
+  id           String    @id @default(cuid())
+  provider     String    @unique
+  accessToken  String?   
+  refreshToken String?   
+  expiresAt    DateTime?
+  updatedAt    DateTime  @updatedAt
+}
