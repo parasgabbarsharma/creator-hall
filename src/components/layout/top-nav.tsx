@@ -49,7 +49,7 @@ export function TopNavBar() {
         transition={{ type: "spring", stiffness: 300, damping: 30 }}
         className="sticky top-0 z-50 bg-white/95 backdrop-blur-sm border-b border-border"
       >
-        <div className="max-w-7xl mx-auto flex items-center justify-between gap-6 h-16 px-4 md:px-6">
+        <div className="w-full flex items-center justify-between gap-6 h-16 px-4 md:px-6 lg:px-12">
           <Link href="/" className="flex items-center gap-2.5 shrink-0 group">
             <div className="w-8 h-8 rounded-full bg-accent flex items-center justify-center text-white shadow-sm transition-transform duration-300 group-hover:scale-105">
               <PlayIcon size={14} className="ml-0.5" />

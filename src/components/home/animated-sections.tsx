@@ -51,7 +51,7 @@ function Counter({ value, label }: { value: string; label: string }) {
 
 export function StatsSection({ subscriberCount, viewCount, videoCount }: { subscriberCount: string, viewCount: string, videoCount: string }) {
   return (
-    <FadeInView className="px-4 max-w-7xl mx-auto">
+    <FadeInView className="px-0 w-full">
       <div className="grid grid-cols-2 md:grid-cols-3 gap-4 md:gap-6 my-24 relative">
         <div className="absolute inset-0 bg-accent/5 blur-3xl rounded-full -z-10" />
         <Counter value={formatCompactNumber(subscriberCount)} label="Subscribers" />
@@ -158,7 +158,7 @@ export function SubGoal({ subscriberCount }: { subscriberCount: string }) {
   const percentage = Math.min(100, Math.max(0, (subs / goal) * 100));
 
   return (
-    <FadeInView className="px-4 max-w-4xl mx-auto my-16">
+    <FadeInView className="px-0 w-full my-16">
       <div className="p-8 rounded-3xl bg-foreground text-background flex flex-col md:flex-row items-center justify-between gap-8 shadow-xl">
         <div>
           <h3 className="text-2xl font-bold font-heading mb-2 flex items-center gap-3">
@@ -197,7 +197,7 @@ export function GearGrid() {
   ];
 
   return (
-    <FadeInView className="px-4 max-w-6xl mx-auto my-32">
+    <FadeInView className="px-0 w-full my-32">
       <h2 className="text-3xl font-heading font-bold text-center mb-12">The Studio Setup</h2>
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
         {gear.map((item, i) => (
@@ -230,7 +230,7 @@ export function Testimonials() {
     <FadeInView className="px-4">
       <section className="my-32 text-center">
         <h2 className="text-4xl font-heading font-bold mb-12 tracking-tight">What The Fans Say</h2>
-        <div className="grid md:grid-cols-3 gap-6 max-w-6xl mx-auto">
+        <div className="grid md:grid-cols-3 gap-6 w-full">
           {testimonials.map((t, i) => (
             <motion.div 
               key={i}
