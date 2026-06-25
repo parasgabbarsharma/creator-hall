@@ -1,13 +1,44 @@
 import { NextResponse } from "next/server";
 import { isApiError } from "./api-errors";
+import { logger } from "./logger";
+
+import { redis } from "./redis";
 
 type RateLimitEntry = {
   count: number;
   resetAt: number;
 };
 
-const rateLimitStore = new Map<string, RateLimitEntry>();
-let lastSweep = Date.now();
+class LRUCache<K, V> {
+  private max: number;
+  private cache: Map<K, V>;
+
+  constructor(max = 5000) {
+    this.max = max;
+    this.cache = new Map();
+  }
+
+  get(key: K): V | undefined {
+    const item = this.cache.get(key);
+    if (item !== undefined) {
+      this.cache.delete(key);
+      this.cache.set(key, item);
+    }
+    return item;
+  }
+
+  set(key: K, val: V) {
+    if (this.cache.has(key)) {
+      this.cache.delete(key);
+    } else if (this.cache.size >= this.max) {
+      const firstKey = this.cache.keys().next().value;
+      if (firstKey !== undefined) this.cache.delete(firstKey);
+    }
+    this.cache.set(key, val);
+  }
+}
+
+const localRateLimitStore = new LRUCache<string, RateLimitEntry>(5000);
 
 export class HttpError extends Error {
   constructor(
@@ -55,18 +86,29 @@ export async function rateLimit(
   options: { limit: number; windowMs: number }
 ): Promise<void> {
   const now = Date.now();
-  
-  if (now - lastSweep > 60_000) {
-    for (const [k, v] of rateLimitStore.entries()) {
-      if (v.resetAt <= now) rateLimitStore.delete(k);
+
+  if (redis) {
+    try {
+      const windowSeconds = Math.ceil(options.windowMs / 1000);
+      const count = await redis.incr(key);
+      if (count === 1) {
+        await redis.expire(key, windowSeconds);
+      }
+      
+      if (count > options.limit) {
+        throw new HttpError(429, "Too many requests. Try again later.");
+      }
+      return;
+    } catch (e) {
+      if (e instanceof HttpError) throw e;
+      logger.error({ err: e }, "Redis rate limit failed, falling back to local LRU");
     }
-    lastSweep = now;
   }
 
-  const existing = rateLimitStore.get(key);
+  const existing = localRateLimitStore.get(key);
 
   if (!existing || existing.resetAt <= now) {
-    rateLimitStore.set(key, { count: 1, resetAt: now + options.windowMs });
+    localRateLimitStore.set(key, { count: 1, resetAt: now + options.windowMs });
     return;
   }
 
@@ -93,6 +135,6 @@ export function handleRouteError(error: unknown, fallback = "Internal server err
     );
   }
 
-  console.error(fallback, error);
+  logger.error({ err: error }, fallback);
   return jsonError(fallback, 500);
 }

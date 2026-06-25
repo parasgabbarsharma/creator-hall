@@ -5,8 +5,7 @@ import { DEFAULT_PAGE_SIZE, CREATOR_NAME, CREATOR_NICKNAME } from "@/lib/config"
 import { isYouTubeShortUrl } from "@/lib/video-url";
 import { getLiveChannelStats, getLiveVideos } from "@/lib/youtube-data";
 import { unstable_cache } from "next/cache";
-
-export const dynamic = "force-dynamic";
+import { logger } from "@/lib/logger";
 
 interface HomePageProps {
   searchParams: Promise<{ q?: string; tab?: string; ytCursor?: string; igCursor?: string }>;
@@ -45,13 +44,13 @@ export default async function HomePage({ searchParams }: HomePageProps) {
       prisma.video.findMany({
         where: { ...baseWhere, platform: "YOUTUBE" as const },
         ...(ytCursor ? { cursor: { id: ytCursor }, skip: 1 } : {}),
-        orderBy: { createdAt: "desc" },
+        orderBy: [{ createdAt: "desc" }, { id: "desc" }],
         take: DEFAULT_PAGE_SIZE + 1,
       }),
       prisma.video.findMany({
         where: { ...baseWhere, platform: "INSTAGRAM" as const },
         ...(igCursor ? { cursor: { id: igCursor }, skip: 1 } : {}),
-        orderBy: { createdAt: "desc" },
+        orderBy: [{ createdAt: "desc" }, { id: "desc" }],
         take: DEFAULT_PAGE_SIZE + 1,
       }),
 
@@ -65,7 +64,7 @@ export default async function HomePage({ searchParams }: HomePageProps) {
 
     [rawYoutubeVideos, rawInstagramVideos, channelInfo, totalCount] = results;
   } catch (error) {
-    console.error("Database connection failed. Falling back to empty state.", error);
+    logger.error({ err: error }, "Database connection failed. Falling back to empty state.");
   }
 
   // Fallback if database is empty or offline
@@ -75,7 +74,7 @@ export default async function HomePage({ searchParams }: HomePageProps) {
       rawYoutubeVideos = liveVideos as unknown as Video[];
       totalCount = Math.max(totalCount, liveVideos.length);
     } catch (e) {
-      console.error("Failed to fetch live videos fallback", e);
+      logger.error({ err: e }, "Failed to fetch live videos fallback");
     }
   }
 

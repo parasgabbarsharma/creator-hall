@@ -12,7 +12,7 @@ const nextConfig: NextConfig = {
             key: "Content-Security-Policy",
             value: [
               "default-src 'self'",
-              "script-src 'self' 'unsafe-inline' 'unsafe-eval'",
+              `script-src 'self' 'unsafe-inline' ${process.env.NODE_ENV === "development" ? "'unsafe-eval'" : ""}`,
               "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
               "font-src 'self' https://fonts.gstatic.com",
               "img-src 'self' data: https://i.ytimg.com https://img.youtube.com https://yt3.ggpht.com https://www.instagram.com https://scontent.cdninstagram.com https://lh3.googleusercontent.com https://ui-avatars.com",
@@ -56,7 +56,7 @@ const nextConfig: NextConfig = {
       },
       {
         protocol: "https",
-        hostname: "**.cdninstagram.com",
+        hostname: "scontent*.cdninstagram.com",
       },
       {
         protocol: "https",

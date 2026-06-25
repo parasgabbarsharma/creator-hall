@@ -196,7 +196,7 @@ export function HomeClient({
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ duration: 0.8, delay: 0.6 }}
-        className="hidden md:grid md:grid-cols-2 gap-8 lg:gap-12 items-start"
+        className="hidden md:grid md:grid-cols-2 gap-6 lg:gap-8 xl:gap-12 items-start"
       >
         <YouTubeSection longs={youtubeLong} shorts={youtubeShorts} hasMore={hasMoreYt} nextCursor={nextYtCursor} currentIgCursor={igCursor} searchQuery={searchQuery} />
         <InstagramSection videos={instagramVideos} hasMore={hasMoreIg} nextCursor={nextIgCursor} currentYtCursor={ytCursor} searchQuery={searchQuery} />
@@ -248,7 +248,7 @@ function YouTubeSection({ longs, shorts, hasMore, nextCursor, currentIgCursor, s
       </div>
 
       {longs.length > 0 && (
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 gap-4">
           {longs.map((video) => <VideoCard key={video.id} video={video} />)}
         </div>
       )}
@@ -259,7 +259,7 @@ function YouTubeSection({ longs, shorts, hasMore, nextCursor, currentIgCursor, s
             <BoltIcon size={16} className="text-accent" />
             Shorts
           </h3>
-          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 2xl:grid-cols-8 gap-4">
             {shorts.map((video) => <VideoCard key={video.id} video={video} />)}
           </div>
         </>
@@ -301,7 +301,7 @@ function InstagramSection({ videos, hasMore, nextCursor, currentYtCursor, search
         <h2 className="text-2xl font-heading font-semibold text-foreground tracking-tight">Instagram</h2>
       </div>
 
-      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
+      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 2xl:grid-cols-8 gap-4">
         {videos.map((video) => <VideoCard key={video.id} video={video} />)}
         {videos.length === 0 && (
           <div className="col-span-full py-12 text-center text-muted bg-surface rounded-lg border border-dashed border-border">

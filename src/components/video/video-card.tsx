@@ -69,7 +69,7 @@ export function VideoCard({ video, priority = false }: VideoCardProps) {
             size="md"
           />
           <div className="flex flex-col overflow-hidden pt-0.5">
-            <h3 className="text-[14px] md:text-[15px] font-heading font-semibold text-foreground md:line-clamp-2 leading-snug group-hover:text-accent transition-colors">
+            <h3 className="text-[14px] md:text-[15px] font-heading font-semibold text-foreground leading-snug group-hover:text-accent transition-colors">
               {video.title}
             </h3>
             <p className="text-[13px] text-muted mt-1.5 flex items-center gap-1.5 truncate">
@@ -79,7 +79,7 @@ export function VideoCard({ video, priority = false }: VideoCardProps) {
               <span className="shrink-0">{formatTimeAgo(video.createdAt)}</span>
             </p>
             {video.description && (
-              <p className="text-[12px] text-muted/80 mt-1 line-clamp-1">
+              <p className="text-[12px] text-muted/80 mt-1">
                 {video.description}
               </p>
             )}

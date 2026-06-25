@@ -13,6 +13,7 @@
   },
   "dependencies": {
     "@prisma/client": "^6.19.3",
+    "@upstash/redis": "^1.38.0",
     "bcryptjs": "^3.0.2",
     "clsx": "^2.1.1",
     "framer-motion": "^12.42.0",
@@ -21,7 +22,6 @@
     "pino": "^9.6.0",
     "react": "^19.1.0",
     "react-dom": "^19.1.0",
-    "recharts": "^2.15.3",
     "tailwind-merge": "^3.2.0",
     "tinyduration": "^3.4.1"
   },

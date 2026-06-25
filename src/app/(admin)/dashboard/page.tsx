@@ -39,7 +39,7 @@ export default async function DashboardPage({ searchParams }: DashboardPageProps
         published: true,
         tags: true,
       },
-      orderBy: { createdAt: "desc" },
+      orderBy: [{ createdAt: "desc" }, { id: "desc" }],
       take: ADMIN_PAGE_SIZE + 1,
     }),
     prisma.video.count({ where: platformFilter }),
@@ -72,9 +72,9 @@ export default async function DashboardPage({ searchParams }: DashboardPageProps
           <CardHeader className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
             <h3 className="text-lg font-semibold text-foreground">Recent Content</h3>
             <div className="flex bg-surface rounded-lg p-1 border border-border">
-              <Link href="/dashboard?tab=all" className={cn("px-4 py-1.5 text-sm font-medium rounded-md transition-colors", activeTab === "all" ? "bg-white text-foreground shadow-sm" : "text-muted hover:text-foreground")}>All</Link>
-              <Link href="/dashboard?tab=youtube" className={cn("px-4 py-1.5 text-sm font-medium rounded-md transition-colors", activeTab === "youtube" ? "bg-white text-foreground shadow-sm" : "text-muted hover:text-foreground")}>YouTube</Link>
-              <Link href="/dashboard?tab=instagram" className={cn("px-4 py-1.5 text-sm font-medium rounded-md transition-colors", activeTab === "instagram" ? "bg-white text-foreground shadow-sm" : "text-muted hover:text-foreground")}>Instagram</Link>
+              <Link href="?tab=all" className={cn("px-4 py-1.5 text-sm font-medium rounded-md transition-colors", activeTab === "all" ? "bg-white text-foreground shadow-sm" : "text-muted hover:text-foreground")}>All</Link>
+              <Link href="?tab=youtube" className={cn("px-4 py-1.5 text-sm font-medium rounded-md transition-colors", activeTab === "youtube" ? "bg-white text-foreground shadow-sm" : "text-muted hover:text-foreground")}>YouTube</Link>
+              <Link href="?tab=instagram" className={cn("px-4 py-1.5 text-sm font-medium rounded-md transition-colors", activeTab === "instagram" ? "bg-white text-foreground shadow-sm" : "text-muted hover:text-foreground")}>Instagram</Link>
             </div>
             <Badge variant="default">{totalCount} total</Badge>
           </CardHeader>

@@ -24,7 +24,7 @@ export async function GET(request: NextRequest) {
       prisma.video.findMany({
         where: { published: true },
         ...(cursor ? { cursor: { id: cursor }, skip: 1 } : {}),
-        orderBy: { createdAt: "desc" },
+        orderBy: [{ createdAt: "desc" }, { id: "desc" }],
         take: limit + 1,
       }),
       prisma.video.count({ where: { published: true } }),
@@ -42,11 +42,8 @@ export async function GET(request: NextRequest) {
         },
       }
     );
-  } catch {
-    return NextResponse.json(
-      { error: "Failed to fetch videos" },
-      { status: 500 }
-    );
+  } catch (error) {
+    return handleRouteError(error, "Failed to fetch videos");
   }
 }
 

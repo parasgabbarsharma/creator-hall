@@ -11,7 +11,7 @@ export default function PublicLayout({
   return (
     <div className="min-h-screen flex flex-col">
       <TopNavBar />
-      <main id="main-content" className="flex-1 w-full px-4 sm:px-6 md:px-8 lg:px-12">
+      <main id="main-content" className="flex-1 w-full px-2 sm:px-4 md:px-6">
         <Suspense
           fallback={
             <div className="space-y-12 mt-8">

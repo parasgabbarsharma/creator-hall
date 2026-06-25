@@ -3,6 +3,8 @@ import type { youtube_v3 } from "googleapis";
 import { prisma } from "./db";
 import { getYouTubeEnv } from "./env";
 import { parse } from "tinyduration";
+import { logger } from "./logger";
+import { redis } from "./redis";
 
 function getYouTubeClient() {
   const env = getYouTubeEnv();
@@ -42,22 +44,36 @@ export async function getLiveChannelStats(): Promise<{ avatar: string | null; na
 }
 
 export async function syncYouTubeChannelData() {
-  // Use database for distributed locking
   const lockProvider = "youtube_sync_lock";
   
-  try {
-    const lock = await prisma.integration.findUnique({ where: { provider: lockProvider } });
-    if (lock && lock.updatedAt > new Date(Date.now() - 5 * 60 * 1000)) {
-      return { success: false, error: "Sync is already running." };
+  let hasRedisLock = false;
+  if (redis) {
+    try {
+      const lockAcquired = await redis.set(lockProvider, "locked", { nx: true, ex: 300 });
+      if (!lockAcquired) {
+        return { success: false, error: "Sync is already running." };
+      }
+      hasRedisLock = true;
+    } catch (e) {
+      logger.error({ err: e }, "Redis lock failed, falling back to Prisma");
     }
-    
-    await prisma.integration.upsert({
-      where: { provider: lockProvider },
-      create: { provider: lockProvider, updatedAt: new Date() },
-      update: { updatedAt: new Date() },
-    });
-  } catch {
-    return { success: false, error: "Could not acquire sync lock." };
+  }
+
+  if (!hasRedisLock) {
+    try {
+      const lock = await prisma.integration.findUnique({ where: { provider: lockProvider } });
+      if (lock && lock.updatedAt > new Date(Date.now() - 5 * 60 * 1000)) {
+        return { success: false, error: "Sync is already running." };
+      }
+      
+      await prisma.integration.upsert({
+        where: { provider: lockProvider },
+        create: { provider: lockProvider, updatedAt: new Date() },
+        update: { updatedAt: new Date() },
+      });
+    } catch {
+      return { success: false, error: "Could not acquire sync lock." };
+    }
   }
 
   try {
@@ -184,13 +200,17 @@ export async function syncYouTubeChannelData() {
     return { success: true, count: totalSynced };
   } catch (error: unknown) {
     const message = error instanceof Error ? error.message : "Unknown error";
-    console.error("YouTube Data API Sync Error:", message);
+    logger.error({ err: error }, "YouTube Data API Sync Error");
     return { success: false, error: message };
   } finally {
-    await prisma.integration.update({
-      where: { provider: lockProvider },
-      data: { updatedAt: new Date(0) }, // Release lock
-    }).catch(() => {});
+    if (hasRedisLock && redis) {
+      await redis.del(lockProvider).catch(() => {});
+    } else {
+      await prisma.integration.update({
+        where: { provider: lockProvider },
+        data: { updatedAt: new Date(0) }, // Release lock
+      }).catch(() => {});
+    }
   }
 }
 
@@ -276,7 +296,7 @@ export async function getLiveVideos(limit = 50) {
       };
     });
   } catch (error) {
-    console.error("Live fetch failed:", error);
+    logger.error({ err: error }, "Live fetch failed");
     return [];
   }
 }
