@@ -13,7 +13,7 @@ export function Footer() {
     <footer className="relative mt-32 border-t border-border overflow-hidden bg-background">
       <div className="absolute inset-0 bg-gradient-to-b from-transparent to-accent/5 pointer-events-none" />
       
-      <div className="w-full px-4 sm:px-6 md:px-8 lg:px-12 pt-24 pb-12 relative z-10">
+      <div className="w-full px-4 md:px-6 pt-24 pb-12 relative z-10">
         <div className="flex flex-col items-center text-center max-w-2xl mx-auto mb-16">
           <Link href="/" className="flex items-center gap-3 shrink-0 group mb-6">
             <div className="w-10 h-10 rounded-xl bg-accent flex items-center justify-center text-white shadow-lg transition-transform duration-500 group-hover:rotate-12 group-hover:scale-110">

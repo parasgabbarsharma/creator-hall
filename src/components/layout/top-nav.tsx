@@ -49,26 +49,15 @@ export function TopNavBar() {
         transition={{ type: "spring", stiffness: 300, damping: 30 }}
         className="sticky top-0 z-50 bg-white/95 backdrop-blur-sm border-b border-border"
       >
-        <div className="w-full flex items-center justify-between gap-6 h-16 px-4 md:px-6 lg:px-12">
-          <Link href="/" className="flex items-center gap-2.5 shrink-0 group">
+        <div className="w-full flex items-center justify-between gap-4 h-16 px-4 md:px-6">
+          <Link href="/" className="flex items-center gap-2.5 shrink-0 group min-w-[150px]">
             <div className="w-8 h-8 rounded-full bg-accent flex items-center justify-center text-white shadow-sm transition-transform duration-300 group-hover:scale-105">
               <PlayIcon size={14} className="ml-0.5" />
             </div>
-            <span className="text-xl font-heading font-bold tracking-tight text-foreground">Paras Sharma</span>
+            <span className="text-xl font-heading font-bold tracking-tight text-foreground hidden sm:block">Paras Sharma</span>
           </Link>
 
-          <div className="hidden md:flex items-center gap-6">
-            {SOCIAL_LINKS.map((link) => {
-              const Icon = PLATFORM_ICONS[link.platform];
-              return (
-                <a key={link.href} href={link.href} target="_blank" rel="noopener noreferrer" className="text-muted hover:text-accent transition-colors" title={link.label}>
-                  <Icon size={20} />
-                </a>
-              );
-            })}
-          </div>
-
-          <div className="flex items-center gap-3 flex-1 max-w-md justify-end md:justify-center ml-auto md:ml-0">
+          <div className="flex-1 max-w-2xl mx-auto px-2 md:px-8">
             <form onSubmit={handleSearch} className="w-full relative group" role="search">
               <label htmlFor="nav-search" className="sr-only">Search videos</label>
               <span className="absolute inset-y-0 left-3 flex items-center pointer-events-none text-muted transition-colors group-focus-within:text-accent">
@@ -76,6 +65,19 @@ export function TopNavBar() {
               </span>
               <input id="nav-search" className="w-full h-10 pl-10 pr-4 bg-surface border border-border/60 hover:border-border rounded-full focus:bg-white focus:border-accent focus:ring-4 focus:ring-accent/10 outline-none text-foreground placeholder:text-muted/80 text-[15px] transition-all shadow-sm" placeholder="Search..." type="text" value={searchQuery} onChange={(e) => setSearchQuery(e.target.value)} />
             </form>
+          </div>
+
+          <div className="flex items-center justify-end gap-3 min-w-[40px] md:min-w-[150px]">
+            <div className="hidden md:flex items-center gap-6">
+              {SOCIAL_LINKS.map((link) => {
+                const Icon = PLATFORM_ICONS[link.platform];
+                return (
+                  <a key={link.href} href={link.href} target="_blank" rel="noopener noreferrer" className="text-muted hover:text-accent transition-colors" title={link.label}>
+                    <Icon size={20} />
+                  </a>
+                );
+              })}
+            </div>
             <button
               onClick={() => setMenuOpen(!menuOpen)}
               className="md:hidden p-2 rounded-lg hover:bg-surface transition-colors"
