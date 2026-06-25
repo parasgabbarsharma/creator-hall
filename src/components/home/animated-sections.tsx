@@ -65,8 +65,8 @@ export function StatsSection({ subscriberCount, viewCount, videoCount }: { subsc
 // 3. Scrolling Marquee
 export function ScrollingMarquee() {
   const items = [
-    "Comedy", "Entertainment", "Vlogs", "Shorts", "Tech", "Lifestyle",
-    "Comedy", "Entertainment", "Vlogs", "Shorts", "Tech", "Lifestyle",
+    "Comedy Shorts", "Relatable Content", "Desi Humour", "Daily Vlogs", "Sketch Comedy", "Trending",
+    "Comedy Shorts", "Relatable Content", "Desi Humour", "Daily Vlogs", "Sketch Comedy", "Trending",
   ];
 
   return (
@@ -108,9 +108,9 @@ export function HeroMeshBackground() {
 // 7. FAQ Accordion
 export function FAQSection() {
   const faqs = [
-    { q: "How often do you upload?", a: "I post new YouTube Shorts every single day, and long-form videos every Sunday!" },
-    { q: "What editing software do you use?", a: "I edit primarily on Adobe Premiere Pro and After Effects for the heavy visuals." },
-    { q: "Do you do brand collaborations?", a: "Yes! For business inquiries, please reach out via the email on my YouTube About page." }
+    { q: "Aap new videos kab upload karte ho?", a: "Main har din ek naya YouTube Short upload karta hoon, aur lambe vlogs Sunday ko aate hain!" },
+    { q: "Aap video edit kis software me karte ho?", a: "Main usually CapCut aur Filmora use karta hoon apne PC par." },
+    { q: "Business ya brand collaboration ke liye kaise contact karein?", a: "Aap mujhe direct email kar sakte hain, meri email ID mere YouTube channel ke About section mein hai!" }
   ];
 
   const [open, setOpen] = useState<number | null>(0);
@@ -221,9 +221,9 @@ export function GearGrid() {
 // 5. Testimonial Section
 export function Testimonials() {
   const testimonials = [
-    { text: "Literally the funniest shorts on the internet right now. Can't stop watching!", author: "@fan123" },
-    { text: "The editing is next level. Keeps me hooked from the first second.", author: "@creatorfan" },
-    { text: "Been following since the early days. The growth is insane but deserved.", author: "@dailywatcher" },
+    { text: "Bhai ki comic timing ek number hai! Har video me hansi nahi rukti 😂", author: "@rahul_sharma99" },
+    { text: "Content bilkul relatable hota hai, aisa lagta hai apni hi kahani chal rahi hai.", author: "@priya.vlogs" },
+    { text: "Editing aur expressions dono top class! Keep it up bhai! 🔥", author: "@amit_kumar_yt" },
   ];
 
   return (

@@ -127,13 +127,13 @@ export function HomeClient({
               {channelName}
             </motion.h1>
             
-            <motion.p 
+            <motion.p
               initial={{ y: 20, opacity: 0 }}
               animate={{ y: 0, opacity: 1 }}
               transition={{ duration: 0.6, delay: 0.3, ease: "easeOut" }}
               className="text-lg md:text-xl text-muted mt-4 max-w-lg mx-auto leading-relaxed"
             >
-              Content creator & storyteller making people laugh one short at a time.
+              Desi comedy and storytelling that will definitely make you laugh. Naye shorts har din!
             </motion.p>
             
             <motion.div 
