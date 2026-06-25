@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/db";
 import { isAuthenticated } from "@/lib/auth";
+import { fetchYouTubeMetadata } from "@/lib/youtube";
 import { parseSupportedVideoUrl } from "@/lib/video-url";
 import {
   assertSameOrigin,
@@ -62,12 +63,24 @@ export async function POST(request: NextRequest) {
     const parsed = parseSupportedVideoUrl(validatedUrl);
     const platform = bodyPlatform || parsed.platform;
 
+    let finalTitle = title;
+    let finalThumbnail = thumbnail;
+    let finalDuration = null;
+    
+    if (platform === "YOUTUBE") {
+      const ytMetadata = await fetchYouTubeMetadata(parsed.canonicalUrl);
+      finalTitle = ytMetadata.title;
+      finalThumbnail = ytMetadata.thumbnail;
+      finalDuration = ytMetadata.duration;
+    }
+
     const video = await prisma.video.create({
       data: {
         url: parsed.canonicalUrl,
         platform,
-        title,
-        thumbnail,
+        title: finalTitle,
+        thumbnail: finalThumbnail,
+        duration: finalDuration,
         creatorName: "Paras Sharma",
         published: true,
       },

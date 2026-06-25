@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 
+import { isValidYouTubeUrl, isValidInstagramUrl } from "@/lib/utils";
 import { useToast } from "@/components/ui/toast";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -14,14 +15,25 @@ export function AdminVideoForm() {
   const [thumbnail, setThumbnail] = useState("");
   const [platformInput, setPlatformInput] = useState<"YOUTUBE" | "INSTAGRAM">("YOUTUBE");
   const [loading, setLoading] = useState(false);
+
+  // Auto-detect platform when URL changes
+  const handleUrlChange = (val: string) => {
+    setUrl(val);
+    if (isValidYouTubeUrl(val)) setPlatformInput("YOUTUBE");
+    else if (isValidInstagramUrl(val)) setPlatformInput("INSTAGRAM");
+  };
   const router = useRouter();
   const toast = useToast();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    if (!url || !title || !thumbnail) {
-      toast.error("Please fill in all fields.");
+    if (!url) {
+      toast.error("Please provide a URL.");
+      return;
+    }
+    if (platformInput === "INSTAGRAM" && (!title || !thumbnail)) {
+      toast.error("Please provide Title and Thumbnail for Instagram videos.");
       return;
     }
 
@@ -58,7 +70,7 @@ export function AdminVideoForm() {
         label="Video URL"
         placeholder="https://youtube.com/..."
         value={url}
-        onChange={(e) => setUrl(e.target.value)}
+        onChange={(e) => handleUrlChange(e.target.value)}
         required
       />
 
@@ -73,21 +85,25 @@ export function AdminVideoForm() {
         </label>
       </div>
 
-      <Input
-        label="Video Title"
-        placeholder="Enter a catchy title..."
-        value={title}
-        onChange={(e) => setTitle(e.target.value)}
-        required
-      />
+      {platformInput === "INSTAGRAM" && (
+        <>
+          <Input
+            label="Video Title"
+            placeholder="Enter a catchy title..."
+            value={title}
+            onChange={(e) => setTitle(e.target.value)}
+            required
+          />
 
-      <Input
-        label="Thumbnail URL"
-        placeholder="https://example.com/image.jpg"
-        value={thumbnail}
-        onChange={(e) => setThumbnail(e.target.value)}
-        required
-      />
+          <Input
+            label="Thumbnail URL"
+            placeholder="https://example.com/image.jpg"
+            value={thumbnail}
+            onChange={(e) => setThumbnail(e.target.value)}
+            required
+          />
+        </>
+      )}
 
       <Button type="submit" disabled={loading} className="w-full mt-2">
         <LinkIcon size={18} />
