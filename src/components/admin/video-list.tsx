@@ -175,7 +175,7 @@ export function VideoList({ videos, hasMore = false, nextCursor, activeTab = "al
 
       {hasMore && nextCursor && (
         <div className="flex justify-center pt-4">
-          <Link href={`/admin/dashboard?cursor=${nextCursor}&tab=${activeTab}`}>
+          <Link href={`/dashboard?cursor=${nextCursor}&tab=${activeTab}`}>
             <Button variant="secondary">Load More</Button>
           </Link>
         </div>
