@@ -80,9 +80,11 @@ export function parseSupportedVideoUrl(input: string): ParsedVideoUrl {
   }
 
   if (host === "instagram.com") {
-    const match = pathname.match(/^\/(reel|p|tv)\/([a-zA-Z0-9_-]+)$/);
+    // Matches /reel/ID or /username/reel/ID
+    const match = pathname.match(/\/(reel|reels|p|tv)\/([a-zA-Z0-9_-]+)$/);
     if (match && INSTAGRAM_ID_PATTERN.test(match[2]!)) {
-      const type = match[1];
+      // Always normalize to /reel/ or /p/ (reels -> reel)
+      const type = match[1] === 'reels' ? 'reel' : match[1];
       const id = match[2];
       return {
         platform: "INSTAGRAM",
