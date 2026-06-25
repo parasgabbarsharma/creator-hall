@@ -84,7 +84,19 @@ export function TopNavBar() {
               aria-controls="mobile-menu"
             >
               <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
-                {menuOpen ? <><path d="M18 6L6 18" /><path d="M6 6l12 12" /></> : <><path d="M3 12h18" /><path d="M3 6h18" /><path d="M3 18h18" /></>}
+                <motion.path
+                  animate={menuOpen ? { d: "M6 18L18 6" } : { d: "M3 6h18" }}
+                  transition={{ duration: 0.3, ease: "easeInOut" }}
+                />
+                <motion.path
+                  animate={menuOpen ? { opacity: 0, scale: 0 } : { opacity: 1, scale: 1 }}
+                  d="M3 12h18"
+                  transition={{ duration: 0.2 }}
+                />
+                <motion.path
+                  animate={menuOpen ? { d: "M6 6l12 12" } : { d: "M3 18h18" }}
+                  transition={{ duration: 0.3, ease: "easeInOut" }}
+                />
               </svg>
             </button>
           </div>
@@ -94,25 +106,36 @@ export function TopNavBar() {
       <AnimatePresence>
         {menuOpen && (
           <motion.div
-            initial={{ opacity: 0, y: -20 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -20 }}
-            transition={{ duration: 0.2 }}
+            initial={{ y: "-100%", borderBottomLeftRadius: "50%", borderBottomRightRadius: "50%" }}
+            animate={{ y: 0, borderBottomLeftRadius: "0%", borderBottomRightRadius: "0%" }}
+            exit={{ y: "-100%", borderBottomLeftRadius: "50%", borderBottomRightRadius: "50%" }}
+            transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
             id="mobile-menu"
-          role="dialog"
-          aria-modal="true"
-          className={cn("fixed inset-0 z-40 bg-white/95 backdrop-blur-md transition-transform duration-300 md:hidden")}
-        >
-          <div className="flex flex-col items-center justify-center h-full gap-8 p-8">
-            {SOCIAL_LINKS.map((link) => {
-              const Icon = PLATFORM_ICONS[link.platform];
-              return (
-                <a key={link.href} href={link.href} target="_blank" rel="noopener noreferrer" className="flex items-center gap-3 text-xl font-heading font-semibold text-foreground hover:text-accent transition-colors" onClick={() => setMenuOpen(false)}>
-                  <Icon size={28} /> {link.label}
-                </a>
-              );
-            })}
-          </div>
+            role="dialog"
+            aria-modal="true"
+            className="fixed top-0 left-0 right-0 bottom-1/4 z-40 bg-foreground text-background shadow-2xl md:hidden overflow-hidden"
+          >
+            <div className="flex flex-col items-center justify-center h-full gap-8 p-8 pt-20">
+              {SOCIAL_LINKS.map((link, i) => {
+                const Icon = PLATFORM_ICONS[link.platform];
+                return (
+                  <motion.a 
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: 10 }}
+                    transition={{ delay: 0.2 + (i * 0.1), duration: 0.4 }}
+                    key={link.href} 
+                    href={link.href} 
+                    target="_blank" 
+                    rel="noopener noreferrer" 
+                    className="flex items-center gap-4 text-2xl font-heading font-semibold hover:text-accent transition-colors" 
+                    onClick={() => setMenuOpen(false)}
+                  >
+                    <Icon size={32} /> {link.label}
+                  </motion.a>
+                );
+              })}
+            </div>
           </motion.div>
         )}
       </AnimatePresence>
