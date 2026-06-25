@@ -3,7 +3,7 @@ import { HomeClient } from "@/components/home/home-client";
 import { Video } from "@prisma/client";
 import { DEFAULT_PAGE_SIZE, CREATOR_NAME, CREATOR_NICKNAME } from "@/lib/config";
 import { isYouTubeShortUrl } from "@/lib/video-url";
-import { getLiveChannelStats } from "@/lib/youtube-data";
+import { getLiveChannelStats, getLiveVideos } from "@/lib/youtube-data";
 import { unstable_cache } from "next/cache";
 
 export const dynamic = "force-dynamic";
@@ -21,6 +21,7 @@ const getCachedVideoCount = unstable_cache(
 export default async function HomePage({ searchParams }: HomePageProps) {
   const { q, tab, ytCursor, igCursor } = await searchParams;
   const searchQuery = q?.trim().slice(0, 120);
+  const activeTab = tab || "youtube";
 
   const baseWhere = {
     published: true,
@@ -70,6 +71,17 @@ export default async function HomePage({ searchParams }: HomePageProps) {
     [rawYoutubeVideos, rawInstagramVideos, channelInfo, totalCount] = results;
   } catch (error) {
     console.error("Database connection failed. Falling back to empty state.", error);
+  }
+
+  // Fallback if database is empty or offline
+  if (rawYoutubeVideos.length === 0 && !searchQuery) {
+    try {
+      const liveVideos = await getLiveVideos(50);
+      rawYoutubeVideos = liveVideos as unknown as Video[];
+      totalCount = Math.max(totalCount, liveVideos.length);
+    } catch (e) {
+      console.error("Failed to fetch live videos fallback", e);
+    }
   }
 
   // Fetch live YouTube stats to fulfill the request

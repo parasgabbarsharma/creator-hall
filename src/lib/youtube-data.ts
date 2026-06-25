@@ -222,3 +222,59 @@ function formatIsoDuration(isoString: string): string {
     return "0:00";
   }
 }
+
+export async function getLiveVideos(limit = 50) {
+  try {
+    const env = getYouTubeEnv();
+    if (!env.channelId || env.channelId === "YOUR_CHANNEL_ID_HERE") return [];
+
+    const res = await fetch(
+      `https://youtube.googleapis.com/youtube/v3/channels?part=contentDetails&id=${env.channelId}&key=${env.apiKey}`,
+      { next: { revalidate: 3600 } }
+    );
+    const channelData = await res.json();
+    const uploadsPlaylistId = channelData.items?.[0]?.contentDetails?.relatedPlaylists?.uploads;
+    
+    if (!uploadsPlaylistId) return [];
+
+    const playlistRes = await fetch(
+      `https://youtube.googleapis.com/youtube/v3/playlistItems?part=snippet%2CcontentDetails&maxResults=${limit}&playlistId=${uploadsPlaylistId}&key=${env.apiKey}`,
+      { next: { revalidate: 3600 } }
+    );
+    const playlistData = await playlistRes.json();
+    const videoIds = (playlistData.items || []).map((i: any) => i.contentDetails?.videoId).filter(Boolean);
+
+    if (videoIds.length === 0) return [];
+
+    const videosRes = await fetch(
+      `https://youtube.googleapis.com/youtube/v3/videos?part=contentDetails%2Csnippet&id=${videoIds.join(',')}&key=${env.apiKey}`,
+      { next: { revalidate: 3600 } }
+    );
+    const videosData = await videosRes.json();
+
+    return (videosData.items || []).map((v: any) => {
+      const durationIso = v.contentDetails?.duration || "PT0S";
+      const isShort = isDurationLessThan60s(durationIso);
+      const url = isShort ? `https://www.youtube.com/shorts/${v.id}` : `https://www.youtube.com/watch?v=${v.id}`;
+      
+      return {
+        id: v.id,
+        url,
+        platform: "YOUTUBE" as const,
+        title: v.snippet?.title || "Untitled",
+        description: v.snippet?.description || "",
+        thumbnail: v.snippet?.thumbnails?.maxres?.url || v.snippet?.thumbnails?.high?.url || v.snippet?.thumbnails?.default?.url || "",
+        duration: formatIsoDuration(durationIso),
+        createdAt: new Date(v.snippet?.publishedAt || Date.now()),
+        creatorName: "",
+        creatorAvatar: "",
+        published: true,
+        tags: [],
+        isShort
+      };
+    });
+  } catch (error) {
+    console.error("Live fetch failed:", error);
+    return [];
+  }
+}
