@@ -8,7 +8,7 @@ import { unstable_cache } from "next/cache";
 import { logger } from "@/lib/logger";
 
 interface HomePageProps {
-  searchParams: Promise<{ q?: string; tab?: string; ytCursor?: string; igCursor?: string }>;
+  searchParams: Promise<{ q?: string; tab?: string }>;
 }
 
 const getCachedVideoCount = unstable_cache(
@@ -18,7 +18,7 @@ const getCachedVideoCount = unstable_cache(
 );
 
 export default async function HomePage({ searchParams }: HomePageProps) {
-  const { q, tab, ytCursor, igCursor } = await searchParams;
+  const { q, tab } = await searchParams;
   const searchQuery = q?.trim().slice(0, 120);
 
   const baseWhere = {
@@ -43,13 +43,11 @@ export default async function HomePage({ searchParams }: HomePageProps) {
     const results = await Promise.all([
       prisma.video.findMany({
         where: { ...baseWhere, platform: "YOUTUBE" as const },
-        ...(ytCursor ? { cursor: { id: ytCursor }, skip: 1 } : {}),
         orderBy: [{ createdAt: "desc" }, { id: "desc" }],
         take: DEFAULT_PAGE_SIZE + 1,
       }),
       prisma.video.findMany({
         where: { ...baseWhere, platform: "INSTAGRAM" as const },
-        ...(igCursor ? { cursor: { id: igCursor }, skip: 1 } : {}),
         orderBy: [{ createdAt: "desc" }, { id: "desc" }],
         take: DEFAULT_PAGE_SIZE + 1,
       }),
@@ -112,8 +110,6 @@ export default async function HomePage({ searchParams }: HomePageProps) {
       hasMoreIg={hasMoreIg}
       nextYtCursor={nextYtCursor}
       nextIgCursor={nextIgCursor}
-      ytCursor={ytCursor}
-      igCursor={igCursor}
 
       subscriberCount={liveStats.subscriberCount}
       viewCount={liveStats.viewCount}

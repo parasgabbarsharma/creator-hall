@@ -7,8 +7,9 @@ import { motion } from "framer-motion";
 import { VideoCard } from "@/components/video/video-card";
 import { Video } from "@prisma/client";
 import { Button } from "@/components/ui/button";
-import { YouTubeIcon, InstagramIcon, BoltIcon, SearchOffIcon, PlayIcon } from "@/components/ui/icons";
+import { YouTubeIcon, InstagramIcon, BoltIcon, SearchOffIcon, PlayIcon, LoadingIcon } from "@/components/ui/icons";
 import { StatsSection, ScrollingMarquee, Testimonials, ConnectCTA, FadeInView, HeroMeshBackground, FAQSection, SubGoal, GearGrid, AboutChannelSection } from "./animated-sections";
+import { isYouTubeShortUrl } from "@/lib/video-url";
 
 interface HomeClientProps {
   youtubeLong: Video[];
@@ -24,8 +25,6 @@ interface HomeClientProps {
   hasMoreIg?: boolean;
   nextYtCursor?: string | null;
   nextIgCursor?: string | null;
-  ytCursor?: string;
-  igCursor?: string;
 
   subscriberCount?: string;
   viewCount?: string;
@@ -46,15 +45,56 @@ export function HomeClient({
   hasMoreIg = false,
   nextYtCursor,
   nextIgCursor,
-  ytCursor,
-  igCursor,
   subscriberCount = "0",
   viewCount = "0",
   videoCount = "0",
 }: HomeClientProps) {
   const initialTab = defaultTab === "instagram" ? "instagram" : "youtube";
   const [activeTab, setActiveTab] = useState<string>(initialTab);
-  const totalContent = youtubeLong.length + youtubeShorts.length + instagramVideos.length;
+  
+  const [ytLongs, setYtLongs] = useState<Video[]>(youtubeLong);
+  const [ytShorts, setYtShorts] = useState<Video[]>(youtubeShorts);
+  const [igVids, setIgVids] = useState<Video[]>(instagramVideos);
+
+  const [moreYt, setMoreYt] = useState(hasMoreYt);
+  const [moreIg, setMoreIg] = useState(hasMoreIg);
+  const [nextYt, setNextYt] = useState(nextYtCursor);
+  const [nextIg, setNextIg] = useState(nextIgCursor);
+  const [loadingMore, setLoadingMore] = useState<"YOUTUBE" | "INSTAGRAM" | null>(null);
+
+  const handleLoadMore = async (platform: "YOUTUBE" | "INSTAGRAM") => {
+    setLoadingMore(platform);
+    try {
+      const cursor = platform === "YOUTUBE" ? nextYt : nextIg;
+      const url = new URL("/api/videos", window.location.origin);
+      url.searchParams.set("limit", "12");
+      if (cursor) url.searchParams.set("cursor", cursor);
+      if (searchQuery) url.searchParams.set("q", searchQuery);
+      url.searchParams.set("platform", platform);
+
+      const res = await fetch(url);
+      const data = await res.json();
+
+      if (platform === "YOUTUBE") {
+        const newLongs = data.items.filter((v: Video) => !isYouTubeShortUrl(v.url));
+        const newShorts = data.items.filter((v: Video) => isYouTubeShortUrl(v.url));
+        setYtLongs(prev => [...prev, ...newLongs]);
+        setYtShorts(prev => [...prev, ...newShorts]);
+        setMoreYt(data.hasMore);
+        setNextYt(data.nextCursor);
+      } else {
+        setIgVids(prev => [...prev, ...data.items]);
+        setMoreIg(data.hasMore);
+        setNextIg(data.nextCursor);
+      }
+    } catch (e) {
+      console.error("Failed to load more", e);
+    } finally {
+      setLoadingMore(null);
+    }
+  };
+
+  const totalContent = ytLongs.length + ytShorts.length + igVids.length;
 
   if (searchQuery && totalContent === 0) {
     return (
@@ -70,23 +110,6 @@ export function HomeClient({
       </div>
     );
   }
-
-  // Calculate URLs for loading more based on current tab on mobile, or both on desktop
-  const buildLoadMoreUrl = () => {
-    const params = new URLSearchParams();
-    if (searchQuery) params.set("q", searchQuery);
-    params.set("tab", activeTab);
-    
-    if (activeTab === "youtube" && nextYtCursor) {
-      params.set("ytCursor", nextYtCursor);
-    } else if (activeTab === "instagram" && nextIgCursor) {
-      params.set("igCursor", nextIgCursor);
-    }
-    
-    return `/?${params.toString()}`;
-  };
-
-  const showLoadMore = (activeTab === "youtube" && hasMoreYt) || (activeTab === "instagram" && hasMoreIg) || (hasMoreYt || hasMoreIg);
 
   return (
     <div className="relative overflow-hidden">
@@ -199,8 +222,8 @@ export function HomeClient({
         transition={{ duration: 0.8, delay: 0.6 }}
         className="hidden md:grid md:grid-cols-2 gap-6 lg:gap-8 xl:gap-12 items-start"
       >
-        <YouTubeSection longs={youtubeLong} shorts={youtubeShorts} hasMore={hasMoreYt} nextCursor={nextYtCursor} currentIgCursor={igCursor} searchQuery={searchQuery} />
-        <InstagramSection videos={instagramVideos} hasMore={hasMoreIg} nextCursor={nextIgCursor} currentYtCursor={ytCursor} searchQuery={searchQuery} />
+        <YouTubeSection longs={ytLongs} shorts={ytShorts} hasMore={moreYt} onLoadMore={() => handleLoadMore("YOUTUBE")} loading={loadingMore === "YOUTUBE"} />
+        <InstagramSection videos={igVids} hasMore={moreIg} onLoadMore={() => handleLoadMore("INSTAGRAM")} loading={loadingMore === "INSTAGRAM"} />
       </motion.div>
 
       <motion.div 
@@ -209,35 +232,18 @@ export function HomeClient({
         transition={{ duration: 0.5 }}
         className="md:hidden"
       >
-        {activeTab === "youtube" && <YouTubeSection longs={youtubeLong} shorts={youtubeShorts} />}
-        {activeTab === "instagram" && <InstagramSection videos={instagramVideos} />}
+        {activeTab === "youtube" && <YouTubeSection longs={ytLongs} shorts={ytShorts} hasMore={moreYt} onLoadMore={() => handleLoadMore("YOUTUBE")} loading={loadingMore === "YOUTUBE"} />}
+        {activeTab === "instagram" && <InstagramSection videos={igVids} hasMore={moreIg} onLoadMore={() => handleLoadMore("INSTAGRAM")} loading={loadingMore === "INSTAGRAM"} />}
       </motion.div>
 
-      {/* Mobile load more button */}
-      <div className="md:hidden">
-        {showLoadMore && (
-          <div className="flex justify-center mt-10">
-            <Link href={buildLoadMoreUrl()}>
-              <Button variant="secondary">Load More</Button>
-            </Link>
-          </div>
-        )}
-      </div>
+      {/* Mobile Load More handled inside the sections now, so we can remove the global one */}
 
       {!searchQuery && <ConnectCTA />}
     </div>
   );
 }
 
-function YouTubeSection({ longs, shorts, hasMore, nextCursor, currentIgCursor, searchQuery }: { longs: Video[]; shorts: Video[], hasMore?: boolean, nextCursor?: string | null, currentIgCursor?: string, searchQuery?: string }) {
-  const getLoadMoreUrl = () => {
-    const params = new URLSearchParams();
-    if (searchQuery) params.set("q", searchQuery);
-    params.set("tab", "youtube");
-    if (nextCursor) params.set("ytCursor", nextCursor);
-    if (currentIgCursor) params.set("igCursor", currentIgCursor);
-    return `/?${params.toString()}`;
-  };
+function YouTubeSection({ longs, shorts, hasMore, onLoadMore, loading }: { longs: Video[]; shorts: Video[], hasMore?: boolean, onLoadMore?: () => void, loading?: boolean }) {
 
   return (
     <section className="flex flex-col gap-6">
@@ -272,26 +278,18 @@ function YouTubeSection({ longs, shorts, hasMore, nextCursor, currentIgCursor, s
         </div>
       )}
 
-      {hasMore && nextCursor && (
-        <div className="hidden md:flex justify-center mt-6">
-          <Link href={getLoadMoreUrl()}>
-            <Button variant="secondary" size="sm">Load More YouTube</Button>
-          </Link>
+      {hasMore && onLoadMore && (
+        <div className="flex justify-center mt-6">
+          <Button variant="secondary" size="sm" onClick={onLoadMore} disabled={loading}>
+            {loading ? <LoadingIcon size={16} className="animate-spin" /> : "Load More YouTube"}
+          </Button>
         </div>
       )}
     </section>
   );
 }
 
-function InstagramSection({ videos, hasMore, nextCursor, currentYtCursor, searchQuery }: { videos: Video[], hasMore?: boolean, nextCursor?: string | null, currentYtCursor?: string, searchQuery?: string }) {
-  const getLoadMoreUrl = () => {
-    const params = new URLSearchParams();
-    if (searchQuery) params.set("q", searchQuery);
-    params.set("tab", "instagram");
-    if (nextCursor) params.set("igCursor", nextCursor);
-    if (currentYtCursor) params.set("ytCursor", currentYtCursor);
-    return `/?${params.toString()}`;
-  };
+function InstagramSection({ videos, hasMore, onLoadMore, loading }: { videos: Video[], hasMore?: boolean, onLoadMore?: () => void, loading?: boolean }) {
 
   return (
     <section className="flex flex-col gap-6">
@@ -311,11 +309,11 @@ function InstagramSection({ videos, hasMore, nextCursor, currentYtCursor, search
         )}
       </div>
 
-      {hasMore && nextCursor && (
-        <div className="hidden md:flex justify-center mt-6">
-          <Link href={getLoadMoreUrl()}>
-            <Button variant="secondary" size="sm">Load More Instagram</Button>
-          </Link>
+      {hasMore && onLoadMore && (
+        <div className="flex justify-center mt-6">
+          <Button variant="secondary" size="sm" onClick={onLoadMore} disabled={loading}>
+            {loading ? <LoadingIcon size={16} className="animate-spin" /> : "Load More Instagram"}
+          </Button>
         </div>
       )}
     </section>

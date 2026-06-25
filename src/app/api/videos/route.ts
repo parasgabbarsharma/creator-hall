@@ -1,7 +1,9 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/db";
+import { Prisma, Platform } from "@prisma/client";
 import { isAuthenticated } from "@/lib/auth";
 import { fetchYouTubeMetadata } from "@/lib/youtube";
+import { fetchInstagramMetadata } from "@/lib/instagram";
 import { parseSupportedVideoUrl } from "@/lib/video-url";
 import {
   assertSameOrigin,
@@ -14,19 +16,38 @@ import { validateUrl, validatePaginationParams } from "@/lib/validation";
 export async function GET(request: NextRequest) {
   try {
     const searchParams = request.nextUrl.searchParams;
+    const platformRaw = searchParams.get("platform");
+    const platform: Platform | undefined =
+      platformRaw === "YOUTUBE" || platformRaw === "INSTAGRAM" ? (platformRaw as Platform) : undefined;
+    const q = searchParams.get("q")?.trim().slice(0, 120);
+
     const { limit, cursor } = validatePaginationParams(
       searchParams.get("limit"),
       searchParams.get("cursor")
     );
 
+    const baseWhere: Prisma.VideoWhereInput = {
+      published: true,
+      ...(platform ? { platform } : {}),
+      ...(q
+        ? {
+            OR: [
+              { title: { contains: q, mode: "insensitive" } },
+              { description: { contains: q, mode: "insensitive" } },
+              { creatorName: { contains: q, mode: "insensitive" } },
+            ],
+          }
+        : {}),
+    };
+
     const [videos, total] = await Promise.all([
       prisma.video.findMany({
-        where: { published: true },
+        where: baseWhere,
         ...(cursor ? { cursor: { id: cursor }, skip: 1 } : {}),
         orderBy: [{ createdAt: "desc" }, { id: "desc" }],
         take: limit + 1,
       }),
-      prisma.video.count({ where: { published: true } }),
+      prisma.video.count({ where: baseWhere }),
     ]);
 
     const hasMore = videos.length > limit;
@@ -72,6 +93,17 @@ export async function POST(request: NextRequest) {
       finalTitle = ytMetadata.title;
       finalThumbnail = ytMetadata.thumbnail;
       finalDuration = ytMetadata.duration;
+    }
+
+    if (platform === "INSTAGRAM") {
+      try {
+        const igMeta = await fetchInstagramMetadata(parsed.canonicalUrl);
+        // Only overwrite if client didn't already send values
+        if (!finalTitle && igMeta.title) finalTitle = igMeta.title;
+        if (!finalThumbnail && igMeta.thumbnail) finalThumbnail = igMeta.thumbnail;
+      } catch {
+        // Non-fatal — user can edit title/thumbnail from the dashboard later
+      }
     }
 
     const video = await prisma.video.create({
