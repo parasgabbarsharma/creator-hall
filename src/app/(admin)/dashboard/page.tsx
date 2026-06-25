@@ -18,13 +18,14 @@ export default async function DashboardPage({ searchParams }: DashboardPageProps
   const { cursor, tab } = await searchParams;
   const activeTab = tab || "all";
   
-  const cursorFilter = cursor ? { id: { lt: cursor } } : {};
+  const cursorFilter = cursor ? { cursor: { id: cursor }, skip: 1 } : {};
   const platformFilter = activeTab === "youtube" ? { platform: "YOUTUBE" as const } : activeTab === "instagram" ? { platform: "INSTAGRAM" as const } : {};
-  const whereFilter = { ...cursorFilter, ...platformFilter };
+  const whereFilter = platformFilter;
 
   const [rawVideos, totalCount] = await Promise.all([
     prisma.video.findMany({
       where: whereFilter,
+      ...cursorFilter,
       select: {
         id: true,
         url: true,

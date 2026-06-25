@@ -38,8 +38,8 @@ export default async function HomePage({ searchParams }: HomePageProps) {
   const ytWhere = { ...baseWhere, platform: "YOUTUBE" as const };
   const igWhere = { ...baseWhere, platform: "INSTAGRAM" as const };
 
-  const ytCursorFilter = ytCursor ? { id: { lt: ytCursor } } : {};
-  const igCursorFilter = igCursor ? { id: { lt: igCursor } } : {};
+  const ytCursorFilter = ytCursor ? { cursor: { id: ytCursor }, skip: 1 } : {};
+  const igCursorFilter = igCursor ? { cursor: { id: igCursor }, skip: 1 } : {};
 
   let rawYoutubeVideos: Video[] = [];
   let rawInstagramVideos: Video[] = [];
@@ -49,12 +49,14 @@ export default async function HomePage({ searchParams }: HomePageProps) {
   try {
     const results = await Promise.all([
       prisma.video.findMany({
-        where: { ...ytWhere, ...ytCursorFilter },
+        where: ytWhere,
+        ...ytCursorFilter,
         orderBy: { createdAt: "desc" },
         take: DEFAULT_PAGE_SIZE + 1,
       }),
       prisma.video.findMany({
-        where: { ...igWhere, ...igCursorFilter },
+        where: igWhere,
+        ...igCursorFilter,
         orderBy: { createdAt: "desc" },
         take: DEFAULT_PAGE_SIZE + 1,
       }),
@@ -111,7 +113,7 @@ export default async function HomePage({ searchParams }: HomePageProps) {
       defaultTab={tab}
       channelAvatar={avatarToUse}
       channelName={nameToUse}
-      totalVideos={totalCount}
+      totalVideos={Number(liveStats.videoCount) || totalCount}
 
       hasMoreYt={hasMoreYt}
       hasMoreIg={hasMoreIg}

@@ -19,7 +19,7 @@ export async function fetchInstagramMetadata(url: string): Promise<InstagramMeta
   // Instagram oEmbed requires an access token, so we use a fallback for now
   return {
     title: parsed.canonicalUrl.includes("/reel/") ? "Instagram Reel" : "Instagram Post",
-    thumbnail: `${parsed.canonicalUrl}media/?size=l`,
+    thumbnail: "https://ui-avatars.com/api/?name=Reel&background=e1306c&color=fff&size=512",
     creatorName: "Instagram Creator",
     creatorAvatar: "https://ui-avatars.com/api/?name=I&background=random",
     duration: "00:00",
