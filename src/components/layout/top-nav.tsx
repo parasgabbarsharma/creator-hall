@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import { cn } from "@/lib/utils";
+
 import { motion, AnimatePresence } from "framer-motion";
 import { SOCIAL_LINKS } from "@/lib/config";
 import { PlayIcon, SearchIcon, YouTubeIcon, InstagramIcon } from "@/components/ui/icons";
