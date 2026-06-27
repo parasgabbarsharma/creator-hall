@@ -113,8 +113,8 @@ export function TopNavBar() {
         {menuOpen && (
           <motion.div
             initial={{ y: "-100%", borderBottomLeftRadius: "50%", borderBottomRightRadius: "50%" }}
-            animate={{ y: 0, borderBottomLeftRadius: "24px", borderBottomRightRadius: "24px" }}
-            exit={{ y: "-100%", borderBottomLeftRadius: "50%", borderBottomRightRadius: "50%" }}
+            animate={{ y: 0, borderBottomLeftRadius: "24px", borderBottomRightRadius: "24px", opacity: 1 }}
+            exit={{ y: "-100%", borderBottomLeftRadius: "50%", borderBottomRightRadius: "50%", opacity: 0, transition: { duration: 0.3 } }}
             transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
             id="mobile-menu"
             role="dialog"
@@ -127,9 +127,8 @@ export function TopNavBar() {
                 return (
                   <motion.a 
                     initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0, y: 10 }}
-                    transition={{ delay: 0.2 + (i * 0.1), duration: 0.4 }}
+                    animate={{ opacity: 1, y: 0, transition: { delay: 0.2 + (i * 0.1), duration: 0.4 } }}
+                    exit={{ opacity: 0, y: 10, transition: { duration: 0.2 } }}
                     key={link.href} 
                     href={link.href} 
                     target="_blank" 
