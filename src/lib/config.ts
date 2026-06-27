@@ -25,6 +25,12 @@ export const SOCIAL_LINKS = [
   },
 ] as const;
 
+export const CONTACT_INFO = {
+  phone: "+91 96912 26433",
+  whatsapp: "https://wa.me/919691226433",
+  email: "contact@parassharmagabbar.com", // Placeholder
+};
+
 export const DEFAULT_PAGE_SIZE = 24;
 export const ADMIN_PAGE_SIZE = 50;
 export const API_PAGE_SIZE_MAX = 50;

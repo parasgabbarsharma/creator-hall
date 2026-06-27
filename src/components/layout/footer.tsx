@@ -1,6 +1,6 @@
 import Link from "next/link";
-import { SOCIAL_LINKS, CREATOR_NAME, CREATOR_NICKNAME } from "@/lib/config";
-import { PlayIcon, YouTubeIcon, InstagramIcon, FacebookIcon } from "@/components/ui/icons";
+import { SOCIAL_LINKS, CREATOR_NAME, CREATOR_NICKNAME, CONTACT_INFO } from "@/lib/config";
+import { PlayIcon, YouTubeIcon, InstagramIcon, FacebookIcon, WhatsAppIcon, PhoneIcon } from "@/components/ui/icons";
 
 const PLATFORM_ICONS = {
   youtube: YouTubeIcon,
@@ -43,6 +43,22 @@ export function Footer() {
                 </a>
               );
             })}
+            <a 
+              href={CONTACT_INFO.whatsapp} 
+              target="_blank" 
+              rel="noopener noreferrer" 
+              className="w-12 h-12 rounded-full bg-surface border border-border flex items-center justify-center text-green-500 hover:text-white hover:border-green-500 hover:bg-green-500 transition-all duration-300 hover:-translate-y-1 shadow-sm hover:shadow-md"
+              aria-label="WhatsApp"
+            >
+              <WhatsAppIcon size={22} />
+            </a>
+            <a 
+              href={`tel:${CONTACT_INFO.phone.replace(/\s+/g, '')}`} 
+              className="w-12 h-12 rounded-full bg-surface border border-border flex items-center justify-center text-blue-500 hover:text-white hover:border-blue-500 hover:bg-blue-500 transition-all duration-300 hover:-translate-y-1 shadow-sm hover:shadow-md"
+              aria-label="Call"
+            >
+              <PhoneIcon size={20} />
+            </a>
           </div>
         </div>
 
@@ -52,6 +68,7 @@ export function Footer() {
           </p>
           <div className="flex items-center gap-8 text-sm text-muted/80 font-medium">
             <Link href="/" className="hover:text-foreground transition-colors">Home</Link>
+            <Link href="/contact" className="hover:text-foreground transition-colors">Contact</Link>
             <Link href="/?tab=youtube" className="hover:text-foreground transition-colors">YouTube</Link>
             <Link href="/?tab=instagram" className="hover:text-foreground transition-colors">Instagram</Link>
           </div>

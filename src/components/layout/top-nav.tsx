@@ -5,8 +5,8 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 
 import { motion, AnimatePresence } from "framer-motion";
-import { SOCIAL_LINKS } from "@/lib/config";
-import { PlayIcon, SearchIcon, YouTubeIcon, InstagramIcon, FacebookIcon } from "@/components/ui/icons";
+import { SOCIAL_LINKS, CONTACT_INFO } from "@/lib/config";
+import { PlayIcon, SearchIcon, YouTubeIcon, InstagramIcon, FacebookIcon, WhatsAppIcon } from "@/components/ui/icons";
 
 const PLATFORM_ICONS = {
   youtube: YouTubeIcon,
@@ -81,6 +81,13 @@ export function TopNavBar() {
                   </a>
                 );
               })}
+              <div className="w-[1px] h-6 bg-border/60 mx-2" />
+              <a href={CONTACT_INFO.whatsapp} target="_blank" rel="noopener noreferrer" className="flex items-center justify-center bg-green-500 hover:bg-green-600 text-white rounded-full w-9 h-9 shadow-sm shadow-green-500/20 transition-all hover:scale-105" title="Chat on WhatsApp">
+                <WhatsAppIcon size={18} />
+              </a>
+              <Link href="/contact" className="text-[14px] font-semibold text-foreground hover:text-accent transition-colors">
+                Contact
+              </Link>
             </div>
             <button
               onClick={() => setMenuOpen(!menuOpen)}
