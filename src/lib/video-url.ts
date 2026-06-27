@@ -1,4 +1,4 @@
-export type SupportedPlatform = "YOUTUBE" | "INSTAGRAM";
+type SupportedPlatform = "YOUTUBE" | "INSTAGRAM";
 
 export type ParsedVideoUrl = {
   platform: SupportedPlatform;

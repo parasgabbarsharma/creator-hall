@@ -12,7 +12,7 @@ export interface InstagramMetadata {
 /**
  * Parses an Instagram URL and extracts the shortcode + content type.
  */
-export function parseInstagramUrl(input: string): {
+function parseInstagramUrl(input: string): {
   shortcode: string;
   type: "reel" | "post" | "tv";
   canonicalUrl: string;
