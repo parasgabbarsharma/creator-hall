@@ -1,6 +1,12 @@
 function getEnv(name: string): string | undefined {
-  const value = process.env[name]?.trim();
+  let value = process.env[name]?.trim();
   if (!value) return undefined;
+  
+  // Strip wrapping quotes if user accidentally included them in Vercel
+  if ((value.startsWith('"') && value.endsWith('"')) || (value.startsWith("'") && value.endsWith("'"))) {
+    value = value.slice(1, -1);
+  }
+
   if (value.startsWith("GET_FROM_") || value.startsWith("REPLACE_WITH_")) {
     throw new Error(
       `${name} contains a placeholder value ("${value}"). Set a real value before starting.`
@@ -40,6 +46,10 @@ export function getAdminPasswordHash(): string {
 
 export function getCronSecret(): string {
   return requireStrongSecret("CRON_SECRET");
+}
+
+export function getSiteUrl(): string | undefined {
+  return getEnv("NEXT_PUBLIC_SITE_URL");
 }
 
 export function getYouTubeEnv() {

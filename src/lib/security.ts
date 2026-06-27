@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { isApiError } from "./api-errors";
+import { getSiteUrl } from "./env";
 import { logger } from "./logger";
 
 import { redis } from "./redis";
@@ -79,9 +80,16 @@ export function assertSameOrigin(request: Request): void {
     throw new HttpError(403, "Invalid request origin");
   }
 
-  const expectedHost = process.env.NEXT_PUBLIC_SITE_URL 
-    ? new URL(process.env.NEXT_PUBLIC_SITE_URL).host 
-    : host;
+  const siteUrl = getSiteUrl();
+  let expectedHost = host;
+  if (siteUrl) {
+    try {
+      expectedHost = new URL(siteUrl).host;
+    } catch {
+      // If the URL is still invalid after stripping quotes, fallback to request host
+      expectedHost = host;
+    }
+  }
 
   if (originHost !== expectedHost && originHost !== host) {
     throw new HttpError(403, "Invalid request origin");
