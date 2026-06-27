@@ -113,15 +113,15 @@ export function TopNavBar() {
         {menuOpen && (
           <motion.div
             initial={{ y: "-100%", borderBottomLeftRadius: "50%", borderBottomRightRadius: "50%" }}
-            animate={{ y: 0, borderBottomLeftRadius: "0%", borderBottomRightRadius: "0%" }}
+            animate={{ y: 0, borderBottomLeftRadius: "24px", borderBottomRightRadius: "24px" }}
             exit={{ y: "-100%", borderBottomLeftRadius: "50%", borderBottomRightRadius: "50%" }}
             transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
             id="mobile-menu"
             role="dialog"
             aria-modal="true"
-            className="fixed top-0 left-0 right-0 bottom-1/4 z-40 bg-foreground text-background shadow-2xl md:hidden overflow-hidden"
+            className="fixed top-[72px] left-0 right-0 z-40 bg-foreground text-background shadow-2xl md:hidden overflow-hidden"
           >
-            <div className="flex flex-col items-center justify-center h-full gap-8 p-8 pt-20">
+            <div className="flex flex-col items-center justify-center gap-6 p-8 pb-10">
               {SOCIAL_LINKS.map((link, i) => {
                 const Icon = PLATFORM_ICONS[link.platform];
                 return (
