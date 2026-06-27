@@ -100,7 +100,7 @@ export function HomeClient({
 
   if (searchQuery && totalContent === 0) {
     return (
-      <div className="py-32 flex flex-col items-center justify-center text-center px-4">
+      <div className="py-16 flex flex-col items-center justify-center text-center px-4">
         <div className="w-20 h-20 bg-surface rounded-full flex items-center justify-center mb-6">
           <SearchOffIcon size={32} className="text-muted" />
         </div>
@@ -118,7 +118,7 @@ export function HomeClient({
       <HeroMeshBackground />
       
       {!searchQuery && (
-        <FadeInView delay={0.1} className="mt-20 mb-16 px-4">
+        <FadeInView delay={0.1} className="mt-12 md:mt-16 mb-10 md:mb-12 px-4">
           <div className="max-w-3xl mx-auto flex flex-col items-center text-center">
             <motion.div 
               initial={{ scale: 0, opacity: 0 }}

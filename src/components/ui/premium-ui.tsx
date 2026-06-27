@@ -141,7 +141,7 @@ export function BentoItem({ children, className, colSpan = 1 }: { children: Reac
       whileHover={{ scale: 1.02 }}
       transition={{ type: "spring", stiffness: 300, damping: 20 }}
       className={cn(
-        "rounded-3xl border border-border/50 bg-surface/80 backdrop-blur-md p-8 shadow-sm overflow-hidden relative group transition-colors hover:border-accent/30",
+        "rounded-2xl border border-border/50 bg-surface/80 backdrop-blur-md p-5 md:p-6 shadow-sm overflow-hidden relative group transition-colors hover:border-accent/30",
         colSpan === 2 && "md:col-span-2",
         colSpan === 3 && "md:col-span-3",
         className

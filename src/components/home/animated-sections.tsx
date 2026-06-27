@@ -53,7 +53,7 @@ function Counter({ value, label }: { value: string; label: string }) {
 export function StatsSection({ subscriberCount, viewCount, videoCount }: { subscriberCount: string, viewCount: string, videoCount: string }) {
   return (
     <FadeInView className="px-4 w-full">
-      <div className="my-24 relative max-w-7xl mx-auto">
+      <div className="my-12 md:my-16 relative max-w-7xl mx-auto">
         <div className="absolute inset-0 bg-accent/5 blur-3xl rounded-full -z-10" />
         <BentoGrid>
           <BentoItem className="flex flex-col items-center justify-center text-center">
@@ -79,7 +79,7 @@ export function ScrollingMarquee() {
   ];
 
   return (
-    <div className="w-full overflow-hidden bg-accent/5 py-8 my-20 border-y border-border relative flex flex-col items-center">
+    <div className="w-full overflow-hidden bg-accent/5 py-5 my-12 md:my-16 border-y border-border relative flex flex-col items-center">
       <div className="absolute left-0 top-0 bottom-0 w-32 bg-gradient-to-r from-background to-transparent z-10" />
       <div className="absolute right-0 top-0 bottom-0 w-32 bg-gradient-to-l from-background to-transparent z-10" />
       
@@ -125,14 +125,14 @@ export function FAQSection() {
   const [open, setOpen] = useState<number | null>(0);
 
   return (
-    <FadeInView className="px-4 max-w-3xl mx-auto my-32">
-      <h2 className="text-3xl font-heading font-bold text-center mb-12">Frequently Asked Questions</h2>
+    <FadeInView className="px-4 max-w-3xl mx-auto my-16 md:my-20">
+      <h2 className="text-2xl md:text-3xl font-heading font-bold text-center mb-8 md:mb-10">Frequently Asked Questions</h2>
       <div className="space-y-4">
         {faqs.map((faq, i) => (
           <div key={i} className="border border-border bg-surface rounded-2xl overflow-hidden transition-all hover:border-accent/30">
             <button 
               onClick={() => setOpen(open === i ? null : i)}
-              className="w-full text-left p-6 flex justify-between items-center font-semibold text-foreground focus:outline-none"
+              className="w-full text-left p-4 md:p-5 flex justify-between items-center font-semibold text-foreground focus:outline-none"
             >
               {faq.q}
               <motion.span animate={{ rotate: open === i ? 45 : 0 }} className="text-muted">
@@ -144,7 +144,7 @@ export function FAQSection() {
               animate={{ height: open === i ? "auto" : 0, opacity: open === i ? 1 : 0 }} 
               className="overflow-hidden"
             >
-              <p className="p-6 pt-0 text-muted leading-relaxed border-t border-border/50">{faq.a}</p>
+              <p className="p-4 pt-0 md:p-5 md:pt-0 text-muted leading-relaxed border-t border-border/50">{faq.a}</p>
             </motion.div>
           </div>
         ))}
@@ -167,8 +167,8 @@ export function SubGoal({ subscriberCount }: { subscriberCount: string }) {
   const percentage = Math.min(100, Math.max(0, (subs / goal) * 100));
 
   return (
-    <FadeInView className="px-0 w-full my-16">
-      <div className="p-8 rounded-3xl bg-foreground text-background flex flex-col md:flex-row items-center justify-between gap-8 shadow-xl">
+    <FadeInView className="px-0 w-full my-10 md:my-12">
+      <div className="p-5 md:p-6 rounded-2xl bg-foreground text-background flex flex-col md:flex-row items-center justify-between gap-6 shadow-xl">
         <div>
           <h3 className="text-2xl font-bold font-heading mb-2 flex items-center gap-3">
             <span className="w-3 h-3 rounded-full bg-red-500 animate-pulse" />
@@ -206,16 +206,16 @@ export function GearGrid() {
   ];
 
   return (
-    <FadeInView className="px-4 w-full my-32">
-      <h2 className="text-3xl font-heading font-bold text-center mb-12">The Studio Setup</h2>
-      <BentoGrid>
+    <FadeInView className="px-4 w-full my-16 md:my-20">
+      <h2 className="text-2xl md:text-3xl font-heading font-bold text-center mb-8 md:mb-10">The Studio Setup</h2>
+      <BentoGrid className="md:grid-cols-2 lg:grid-cols-4">
         {gear.map((item, i) => (
           <motion.div 
             key={i}
             whileHover={{ y: -5 }}
-            className="p-6 bg-surface border border-border rounded-2xl text-center group"
+            className="p-5 md:p-6 bg-surface border border-border rounded-2xl text-center group flex flex-col items-center justify-center"
           >
-            <div className="w-12 h-12 mx-auto bg-background rounded-full flex items-center justify-center mb-4 group-hover:scale-110 transition-transform text-muted">
+            <div className="w-10 h-10 md:w-12 md:h-12 mx-auto bg-background rounded-full flex items-center justify-center mb-3 md:mb-4 group-hover:scale-110 transition-transform text-muted">
               <BoltIcon size={20} />
             </div>
             <h4 className="font-bold text-foreground">{item.name}</h4>
@@ -236,18 +236,18 @@ export function Testimonials() {
   ];
 
   return (
-    <FadeInView className="px-4">
-      <section className="my-32 text-center">
-        <h2 className="text-4xl md:text-5xl font-heading font-extrabold mb-12 tracking-tight flex justify-center">
+    <FadeInView delay={0.2} className="px-4 w-full">
+      <section className="my-16 md:my-20 max-w-7xl mx-auto">
+        <h2 className="text-2xl md:text-3xl font-heading font-bold mb-8 md:mb-10 text-center tracking-tight flex justify-center">
           <TextReveal text="What The Fans Say" />
         </h2>
-        <div className="grid md:grid-cols-3 gap-6 w-full max-w-7xl mx-auto">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 md:gap-6">
           {testimonials.map((t, i) => (
             <motion.div 
               key={i}
-              whileHover={{ y: -10, scale: 1.02 }}
+              whileHover={{ y: -5, scale: 1.01 }}
               transition={{ type: "spring", stiffness: 300, damping: 20 }}
-              className="p-8 rounded-3xl bg-surface border border-border text-left relative overflow-hidden group shadow-sm hover:shadow-xl hover:shadow-accent/5 transition-all"
+              className="p-5 md:p-6 rounded-2xl bg-surface border border-border text-left relative overflow-hidden group shadow-sm hover:shadow-lg transition-all"
             >
               <div className="absolute top-0 right-0 p-6 opacity-5 group-hover:opacity-10 transition-opacity transform group-hover:scale-110 group-hover:rotate-12 duration-500">
                 <YouTubeIcon size={64} />
@@ -266,15 +266,15 @@ export function Testimonials() {
 export function ConnectCTA() {
   return (
     <FadeInView className="px-4">
-      <div className="relative rounded-[2.5rem] overflow-hidden bg-foreground text-background py-24 px-6 text-center my-32 max-w-5xl mx-auto shadow-2xl">
+      <div className="relative rounded-3xl overflow-hidden bg-foreground text-background py-12 md:py-16 px-6 text-center my-16 md:my-20 max-w-5xl mx-auto shadow-2xl">
         <div className="absolute inset-0 bg-gradient-to-br from-accent/30 via-transparent to-pink-600/20 pointer-events-none" />
         <motion.div
           animate={{ rotate: 360 }}
           transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
           className="absolute -top-32 -left-32 w-64 h-64 bg-accent/40 rounded-full blur-[80px] pointer-events-none"
         />
-        <h2 className="text-4xl md:text-5xl font-heading font-bold mb-6 relative z-10 tracking-tight text-white">Join The Community</h2>
-        <p className="text-[#a3a3a3] mb-10 max-w-xl mx-auto relative z-10 text-lg">
+        <h2 className="text-3xl md:text-4xl font-heading font-bold mb-4 relative z-10 tracking-tight text-white">Join The Community</h2>
+        <p className="text-[#a3a3a3] mb-8 max-w-xl mx-auto relative z-10 text-base md:text-lg">
           Subscribe to my channel and turn on notifications to never miss a new video or update!
         </p>
         <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }} className="relative z-10 inline-block">
@@ -316,16 +316,16 @@ export function AboutChannelSection() {
   ];
 
   return (
-    <FadeInView className="px-4 my-32 max-w-6xl mx-auto">
-      <div className="text-center mb-16">
-        <h2 className="text-4xl font-heading font-bold mb-4 tracking-tight">Kahaani Gabbar Ki</h2>
-        <p className="text-lg text-muted max-w-2xl mx-auto">
+    <FadeInView className="px-4 my-16 md:my-20 max-w-7xl mx-auto">
+      <div className="text-center mb-10 md:mb-12">
+        <h2 className="text-3xl md:text-4xl font-heading font-bold mb-4 tracking-tight">Kahaani Gabbar Ki</h2>
+        <p className="text-base md:text-lg text-muted max-w-2xl mx-auto">
           Zameen se judi comedy, doston wali baatein aur asli zindagi ke kisse. Yahan koi banawati acting nahi hoti, bas apna wahi MP wala swag aur relatable situations hoti hain jo aapko bolne par majboor kar dengi - &quot;Bhai, ye toh bilkul mere dost jaisa hai!&quot; 😂
         </p>
       </div>
-      <div className="grid md:grid-cols-2 gap-6">
+      <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-5 md:gap-6">
         {pillars.map((p, i) => (
-          <div key={i} className="p-8 rounded-3xl bg-surface border border-border hover:border-accent/50 transition-colors shadow-sm hover:shadow-md group">
+          <div key={i} className="p-5 md:p-6 rounded-2xl bg-surface border border-border hover:border-accent/50 transition-colors shadow-sm hover:shadow-md group flex flex-col h-full">
             <h3 className="text-xl font-heading font-bold text-foreground mb-1 group-hover:text-accent transition-colors">{p.title}</h3>
             <h4 className="text-sm font-semibold text-accent/80 mb-4">{p.titleHi}</h4>
             <p className="text-muted leading-relaxed">{p.desc}</p>
