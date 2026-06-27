@@ -8,6 +8,12 @@ const PLATFORM_ICONS = {
   facebook: FacebookIcon,
 } as const;
 
+const PLATFORM_HOVER_COLORS: Record<string, string> = {
+  youtube: "hover:text-[#FF0000] hover:border-[#FF0000] hover:bg-[#FF0000]/10",
+  instagram: "hover:text-[#E1306C] hover:border-[#E1306C] hover:bg-[#E1306C]/10",
+  facebook: "hover:text-[#1877F2] hover:border-[#1877F2] hover:bg-[#1877F2]/10",
+};
+
 export function Footer() {
   return (
     <footer className="relative mt-32 border-t border-border overflow-hidden bg-background">
@@ -30,13 +36,14 @@ export function Footer() {
           <div className="flex items-center gap-6 mt-10">
             {SOCIAL_LINKS.map((link) => {
               const Icon = PLATFORM_ICONS[link.platform];
+              const hoverClass = PLATFORM_HOVER_COLORS[link.platform];
               return (
                 <a 
                   key={link.href} 
                   href={link.href} 
                   target="_blank" 
                   rel="noopener noreferrer" 
-                  className="w-12 h-12 rounded-full bg-surface border border-border flex items-center justify-center text-muted hover:text-accent hover:border-accent hover:bg-accent/5 transition-all duration-300 hover:-translate-y-1 shadow-sm hover:shadow-md"
+                  className={`w-12 h-12 rounded-full bg-surface border border-border flex items-center justify-center text-muted transition-all duration-300 hover:-translate-y-1 shadow-sm hover:shadow-md ${hoverClass}`}
                   aria-label={link.label}
                 >
                   <Icon size={20} />
@@ -47,14 +54,14 @@ export function Footer() {
               href={CONTACT_INFO.whatsapp} 
               target="_blank" 
               rel="noopener noreferrer" 
-              className="w-12 h-12 rounded-full bg-surface border border-border flex items-center justify-center text-green-500 hover:text-white hover:border-green-500 hover:bg-green-500 transition-all duration-300 hover:-translate-y-1 shadow-sm hover:shadow-md"
+              className="w-12 h-12 rounded-full bg-surface border border-border flex items-center justify-center text-muted transition-all duration-300 hover:-translate-y-1 shadow-sm hover:shadow-md hover:text-[#25D366] hover:border-[#25D366] hover:bg-[#25D366]/10"
               aria-label="WhatsApp"
             >
               <WhatsAppIcon size={22} />
             </a>
             <a 
               href={`tel:${CONTACT_INFO.phone.replace(/\s+/g, '')}`} 
-              className="w-12 h-12 rounded-full bg-surface border border-border flex items-center justify-center text-blue-500 hover:text-white hover:border-blue-500 hover:bg-blue-500 transition-all duration-300 hover:-translate-y-1 shadow-sm hover:shadow-md"
+              className="w-12 h-12 rounded-full bg-surface border border-border flex items-center justify-center text-muted transition-all duration-300 hover:-translate-y-1 shadow-sm hover:shadow-md hover:text-foreground hover:border-foreground hover:bg-foreground/5"
               aria-label="Call"
             >
               <PhoneIcon size={20} />
