@@ -1,5 +1,6 @@
 import { prisma } from "@/lib/db";
 import { AdminVideoForm } from "@/components/admin/admin-video-form";
+import { SyncYouTubeButton } from "@/components/admin/sync-youtube-button";
 import { VideoList } from "@/components/admin/video-list";
 import { Card, CardBody, CardHeader } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -53,9 +54,12 @@ export default async function DashboardPage({ searchParams }: DashboardPageProps
 
   return (
     <div className="space-y-8 pb-12">
-      <header className="border-b border-border/50 pb-6">
-        <h2 className="text-3xl font-heading font-bold tracking-tight text-foreground">Content Studio</h2>
-        <p className="text-[15px] text-muted mt-2">Manage your YouTube and Instagram content library.</p>
+      <header className="border-b border-border/50 pb-6 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+        <div>
+          <h2 className="text-3xl font-heading font-bold tracking-tight text-foreground">Content Studio</h2>
+          <p className="text-[15px] text-muted mt-2">Manage your YouTube and Instagram content library.</p>
+        </div>
+        <SyncYouTubeButton />
       </header>
 
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
