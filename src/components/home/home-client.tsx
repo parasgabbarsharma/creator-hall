@@ -11,7 +11,7 @@ import { YouTubeIcon, InstagramIcon, BoltIcon, SearchOffIcon, PlayIcon, LoadingI
 import { StatsSection, ScrollingMarquee, Testimonials, ConnectCTA, FadeInView, HeroMeshBackground, FAQSection, SubGoal, GearGrid, AboutChannelSection } from "./animated-sections";
 import { isYouTubeShortUrl } from "@/lib/video-url";
 import { CREATOR_BIO } from "@/lib/config";
-import { GradientText, MagneticWrapper } from "@/components/ui/premium-ui";
+import { GradientText } from "@/components/ui/premium-ui";
 
 interface HomeClientProps {
   youtubeLong: Video[];
@@ -172,7 +172,6 @@ export function HomeClient({
                 <PlayIcon size={18} className="text-muted" />
                 <span className="text-[15px] font-semibold text-foreground">{totalVideos} <span className="font-normal text-muted">Videos</span></span>
               </div>
-              <MagneticWrapper>
                 <motion.a 
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
@@ -184,7 +183,6 @@ export function HomeClient({
                   <YouTubeIcon size={20} />
                   Subscribe Now
                 </motion.a>
-              </MagneticWrapper>
             </motion.div>
           </div>
         </FadeInView>

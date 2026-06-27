@@ -1,7 +1,7 @@
 "use client";
 
-import React, { useRef, useState } from "react";
-import { motion, useScroll, useSpring, useTransform, useMotionValue } from "framer-motion";
+import React from "react";
+import { motion, useScroll, useSpring, useMotionValue, useTransform } from "framer-motion";
 import { cn } from "@/lib/utils";
 
 // 1. Scroll Progress Bar
@@ -21,37 +21,7 @@ export function ScrollProgress() {
   );
 }
 
-// 2. Magnetic Button Wrapper
-export function MagneticWrapper({ children, className }: { children: React.ReactElement, className?: string }) {
-  const ref = useRef<HTMLDivElement>(null);
-  const [position, setPosition] = useState({ x: 0, y: 0 });
 
-  const handleMouse = (e: React.MouseEvent<HTMLDivElement>) => {
-    const { clientX, clientY } = e;
-    const { height, width, left, top } = ref.current!.getBoundingClientRect();
-    const middleX = clientX - (left + width / 2);
-    const middleY = clientY - (top + height / 2);
-    setPosition({ x: middleX * 0.2, y: middleY * 0.2 });
-  };
-
-  const reset = () => {
-    setPosition({ x: 0, y: 0 });
-  };
-
-  const { x, y } = position;
-  return (
-    <motion.div
-      ref={ref}
-      onMouseMove={handleMouse}
-      onMouseLeave={reset}
-      animate={{ x, y }}
-      transition={{ type: "spring", stiffness: 150, damping: 15, mass: 0.1 }}
-      className={cn("w-fit h-fit cursor-pointer inline-block", className)}
-    >
-      {children}
-    </motion.div>
-  );
-}
 
 // 3. Hover Tilt Card (3D effect)
 export function HoverTiltCard({ children, className }: { children: React.ReactNode, className?: string }) {

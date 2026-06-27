@@ -19,7 +19,7 @@ export function SyncYouTubeButton() {
       } else {
         toast.error(res.error || "Failed to sync YouTube videos");
       }
-    } catch (err) {
+    } catch {
       toast.error("An unexpected error occurred");
     } finally {
       setIsSyncing(false);
