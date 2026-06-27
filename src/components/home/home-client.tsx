@@ -11,7 +11,7 @@ import { YouTubeIcon, InstagramIcon, BoltIcon, SearchOffIcon, PlayIcon, LoadingI
 import { StatsSection, ScrollingMarquee, Testimonials, ConnectCTA, FadeInView, HeroMeshBackground, FAQSection, SubGoal, GearGrid, AboutChannelSection } from "./animated-sections";
 import { isYouTubeShortUrl } from "@/lib/video-url";
 import { CREATOR_BIO } from "@/lib/config";
-import { SpotlightHero, GradientText, Sparkles, MagneticWrapper } from "@/components/ui/premium-ui";
+import { GradientText, Sparkles, MagneticWrapper } from "@/components/ui/premium-ui";
 
 interface HomeClientProps {
   youtubeLong: Video[];
@@ -115,7 +115,6 @@ export function HomeClient({
 
   return (
     <div className="relative overflow-hidden">
-      <SpotlightHero>
       <HeroMeshBackground />
       
       {!searchQuery && (
@@ -192,7 +191,6 @@ export function HomeClient({
           </div>
         </FadeInView>
       )}
-      </SpotlightHero>
 
       {!searchQuery && <SubGoal subscriberCount={subscriberCount} />}
       {!searchQuery && <StatsSection subscriberCount={subscriberCount} viewCount={viewCount} videoCount={videoCount} />}
