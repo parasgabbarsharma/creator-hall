@@ -242,9 +242,6 @@ export function Testimonials() {
               transition={{ type: "spring", stiffness: 300, damping: 20 }}
               className="p-5 md:p-6 rounded-2xl bg-surface border border-border text-left relative overflow-hidden group shadow-sm hover:shadow-lg transition-all"
             >
-              <div className="absolute top-0 right-0 p-6 opacity-5 group-hover:opacity-10 transition-opacity transform group-hover:scale-110 group-hover:rotate-12 duration-500">
-                <YouTubeIcon size={64} />
-              </div>
               <p className="text-muted leading-relaxed relative z-10 text-lg">&ldquo;{t.text}&rdquo;</p>
               <p className="font-semibold text-foreground mt-6 relative z-10 font-heading">{t.author}</p>
             </motion.div>
