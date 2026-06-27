@@ -5,6 +5,7 @@ import { isAuthenticated } from "@/lib/auth";
 import { fetchYouTubeMetadata } from "@/lib/youtube";
 import { fetchInstagramMetadata } from "@/lib/instagram";
 import { parseSupportedVideoUrl } from "@/lib/video-url";
+import { CREATOR_NAME } from "@/lib/config";
 import {
   assertSameOrigin,
   getClientIp,
@@ -87,12 +88,16 @@ export async function POST(request: NextRequest) {
     let finalTitle = title;
     let finalThumbnail = thumbnail;
     let finalDuration = null;
+    let finalCreatorName = CREATOR_NAME;
+    let finalCreatorAvatar: string | null = null;
     
     if (platform === "YOUTUBE") {
       const ytMetadata = await fetchYouTubeMetadata(parsed.canonicalUrl);
       finalTitle = ytMetadata.title;
       finalThumbnail = ytMetadata.thumbnail;
-      finalDuration = ytMetadata.duration;
+      finalDuration = ytMetadata.duration || null;
+      if (ytMetadata.creatorName) finalCreatorName = ytMetadata.creatorName;
+      if (ytMetadata.creatorAvatar) finalCreatorAvatar = ytMetadata.creatorAvatar;
     }
 
     if (platform === "INSTAGRAM") {
@@ -113,7 +118,8 @@ export async function POST(request: NextRequest) {
         title: finalTitle,
         thumbnail: finalThumbnail,
         duration: finalDuration,
-        creatorName: "Paras Sharma",
+        creatorName: finalCreatorName,
+        creatorAvatar: finalCreatorAvatar,
         published: true,
       },
     });

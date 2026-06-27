@@ -10,6 +10,7 @@ import { Button } from "@/components/ui/button";
 import { YouTubeIcon, InstagramIcon, BoltIcon, SearchOffIcon, PlayIcon, LoadingIcon } from "@/components/ui/icons";
 import { StatsSection, ScrollingMarquee, Testimonials, ConnectCTA, FadeInView, HeroMeshBackground, FAQSection, SubGoal, GearGrid, AboutChannelSection } from "./animated-sections";
 import { isYouTubeShortUrl } from "@/lib/video-url";
+import { CREATOR_BIO } from "@/lib/config";
 
 interface HomeClientProps {
   youtubeLong: Video[];
@@ -156,7 +157,7 @@ export function HomeClient({
               transition={{ duration: 0.6, delay: 0.3, ease: "easeOut" }}
               className="text-lg md:text-xl text-muted mt-4 max-w-lg mx-auto leading-relaxed"
             >
-              Desi comedy, MP 20/21 ka swag aur aisi relatable kahaniyan jahan doston ki hawabaazi hamesha ulti padti hai! 😂 Naye shorts har din!
+              {CREATOR_BIO}
             </motion.p>
             
             <motion.div 
