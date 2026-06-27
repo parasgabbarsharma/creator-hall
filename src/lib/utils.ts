@@ -40,7 +40,8 @@ export function extractInstagramId(url: string): string | null {
   }
 }
 
-export function formatTimeAgo(date: Date): string {
+export function formatTimeAgo(dateInput: Date | string): string {
+  const date = new Date(dateInput);
   const now = new Date();
   const diffInSeconds = Math.floor((now.getTime() - date.getTime()) / 1000);
 
