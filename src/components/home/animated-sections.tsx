@@ -3,8 +3,8 @@
 import { motion, useInView } from "framer-motion";
 import { useRef, useState } from "react";
 import { YouTubeIcon, BoltIcon } from "@/components/ui/icons";
-import { Button } from "@/components/ui/button";
-import { TextReveal } from "@/components/ui/premium-ui";
+
+import { TextReveal, ShinyButton, Meteors } from "@/components/ui/premium-ui";
 
 // 1. FadeInView Wrapper
 export function FadeInView({ children, delay = 0, className = "" }: { children: React.ReactNode; delay?: number; className?: string }) {
@@ -256,25 +256,31 @@ export function Testimonials() {
 export function ConnectCTA() {
   return (
     <FadeInView className="px-4">
-      <div className="relative rounded-3xl overflow-hidden bg-foreground text-background py-12 md:py-16 px-6 text-center my-16 md:my-20 max-w-5xl mx-auto shadow-2xl">
-        <div className="absolute inset-0 bg-gradient-to-br from-accent/30 via-transparent to-pink-600/20 pointer-events-none" />
+      <div className="relative rounded-3xl overflow-hidden bg-[#0f172a] text-background py-16 md:py-24 px-6 text-center my-16 md:my-20 max-w-5xl mx-auto shadow-2xl">
+        <Meteors number={30} />
+        <div className="absolute inset-0 bg-gradient-to-br from-accent/20 via-transparent to-pink-600/10 pointer-events-none" />
         <motion.div
           animate={{ rotate: 360 }}
-          transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
-          className="absolute -top-32 -left-32 w-64 h-64 bg-accent/40 rounded-full blur-[80px] pointer-events-none"
+          transition={{ duration: 30, repeat: Infinity, ease: "linear" }}
+          className="absolute -top-32 -left-32 w-72 h-72 bg-accent/30 rounded-full blur-[100px] pointer-events-none"
         />
-        <h2 className="text-3xl md:text-4xl font-heading font-bold mb-4 relative z-10 tracking-tight text-white">Join The Community</h2>
-        <p className="text-[#a3a3a3] mb-8 max-w-xl mx-auto relative z-10 text-base md:text-lg">
+        <h2 className="text-3xl md:text-5xl font-heading font-extrabold mb-5 relative z-10 tracking-tight text-white">Join The Community</h2>
+        <p className="text-[#a3a3a3] mb-10 max-w-xl mx-auto relative z-10 text-base md:text-lg font-medium">
           Subscribe to my channel and turn on notifications to never miss a new video or update!
         </p>
-        <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }} className="relative z-10 inline-block">
-          <a href="https://www.youtube.com/@parassharmagabbar/shorts" target="_blank" rel="noopener noreferrer">
-            <Button size="lg" className="bg-accent hover:bg-accent-hover text-white rounded-full px-12 py-7 text-xl shadow-xl shadow-accent/20 font-bold transition-all">
-              <YouTubeIcon size={24} className="mr-2" />
-              Subscribe Now
-            </Button>
+        <div className="relative z-10 inline-block">
+          <a href="https://www.youtube.com/@parassharmagabbar?sub_confirmation=1" target="_blank" rel="noopener noreferrer">
+            <ShinyButton 
+              text={
+                <>
+                  <YouTubeIcon size={24} className="mr-1" />
+                  Subscribe Now
+                </>
+              }
+              className="px-10 py-4 text-lg md:text-xl"
+            />
           </a>
-        </motion.div>
+        </div>
       </div>
     </FadeInView>
   );

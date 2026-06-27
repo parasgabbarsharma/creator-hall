@@ -47,6 +47,19 @@ const config: Config = {
         md: "0 8px 24px rgba(149, 157, 165, 0.2)",
         lg: "0 12px 32px rgba(149, 157, 165, 0.3)",
       },
+      animation: {
+        "meteor-effect": "meteor 5s linear infinite",
+      },
+      keyframes: {
+        meteor: {
+          "0%": { transform: "rotate(215deg) translateX(0)", opacity: "1" },
+          "70%": { opacity: "1" },
+          "100%": {
+            transform: "rotate(215deg) translateX(-500px)",
+            opacity: "0",
+          },
+        },
+      },
     },
   },
   plugins: [],

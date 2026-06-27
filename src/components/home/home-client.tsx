@@ -176,7 +176,7 @@ export function HomeClient({
                 <motion.a 
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
-                  href="https://www.youtube.com/@parassharmagabbar/shorts" 
+                  href="https://www.youtube.com/@parassharmagabbar?sub_confirmation=1" 
                   target="_blank" 
                   rel="noopener noreferrer" 
                   className="flex items-center gap-2 px-8 py-3.5 bg-accent text-white rounded-full shadow-lg shadow-accent/30 hover:shadow-accent/50 hover:bg-accent-hover transition-all font-bold text-[16px] tracking-wide"
