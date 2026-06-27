@@ -4,7 +4,7 @@ import { motion, useInView } from "framer-motion";
 import { useRef, useState } from "react";
 import { YouTubeIcon, BoltIcon } from "@/components/ui/icons";
 import { Button } from "@/components/ui/button";
-import { BentoGrid, BentoItem, TextReveal } from "@/components/ui/premium-ui";
+import { TextReveal } from "@/components/ui/premium-ui";
 
 // 1. FadeInView Wrapper
 export function FadeInView({ children, delay = 0, className = "" }: { children: React.ReactNode; delay?: number; className?: string }) {
@@ -32,40 +32,33 @@ function formatCompactNumber(number: number | string) {
   return formatter.format(n);
 }
 
-// 2. Stats Counter
 function Counter({ value, label }: { value: string; label: string }) {
   return (
-    <div className="flex flex-col items-center justify-center p-6 bg-surface/50 backdrop-blur-sm rounded-2xl border border-border shadow-sm hover:border-accent/50 transition-colors">
+    <div className="flex flex-col items-center justify-center p-3 sm:p-4 md:p-6 bg-surface/80 backdrop-blur-sm rounded-xl md:rounded-2xl border border-border/50 shadow-sm hover:border-accent/50 transition-colors h-full text-center">
       <motion.span 
         initial={{ scale: 0.5, opacity: 0 }}
         whileInView={{ scale: 1, opacity: 1 }}
         viewport={{ once: true }}
         transition={{ type: "spring", stiffness: 100, delay: 0.2 }}
-        className="text-4xl md:text-5xl font-heading font-bold text-accent mb-2"
+        className="text-xl sm:text-3xl md:text-5xl font-heading font-bold text-accent mb-1 md:mb-2"
       >
         {value}
       </motion.span>
-      <span className="text-muted font-medium text-sm uppercase tracking-wider">{label}</span>
+      <span className="text-muted font-medium text-[9px] sm:text-xs md:text-sm uppercase tracking-wider leading-tight">{label}</span>
     </div>
   );
 }
 
 export function StatsSection({ subscriberCount, viewCount, videoCount }: { subscriberCount: string, viewCount: string, videoCount: string }) {
   return (
-    <FadeInView className="px-4 w-full">
+    <FadeInView className="px-3 md:px-4 w-full">
       <div className="my-12 md:my-16 relative max-w-7xl mx-auto">
         <div className="absolute inset-0 bg-accent/5 blur-3xl rounded-full -z-10" />
-        <BentoGrid>
-          <BentoItem className="flex flex-col items-center justify-center text-center">
-            <Counter value={formatCompactNumber(subscriberCount)} label="Subscribers" />
-          </BentoItem>
-          <BentoItem className="flex flex-col items-center justify-center text-center">
-            <Counter value={formatCompactNumber(viewCount)} label="Total Views" />
-          </BentoItem>
-          <BentoItem className="flex flex-col items-center justify-center text-center">
-            <Counter value={formatCompactNumber(videoCount)} label="Videos" />
-          </BentoItem>
-        </BentoGrid>
+        <div className="grid grid-cols-3 gap-2 sm:gap-4 md:gap-6 w-full">
+          <Counter value={formatCompactNumber(subscriberCount)} label="Subscribers" />
+          <Counter value={formatCompactNumber(viewCount)} label="Total Views" />
+          <Counter value={formatCompactNumber(videoCount)} label="Videos" />
+        </div>
       </div>
     </FadeInView>
   );
@@ -208,21 +201,21 @@ export function GearGrid() {
   return (
     <FadeInView className="px-4 w-full my-16 md:my-20">
       <h2 className="text-2xl md:text-3xl font-heading font-bold text-center mb-8 md:mb-10">The Studio Setup</h2>
-      <BentoGrid className="md:grid-cols-2 lg:grid-cols-4">
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 md:gap-6 w-full max-w-7xl mx-auto">
         {gear.map((item, i) => (
           <motion.div 
             key={i}
             whileHover={{ y: -5 }}
-            className="p-5 md:p-6 bg-surface border border-border rounded-2xl text-center group flex flex-col items-center justify-center"
+            className="p-4 md:p-6 bg-surface/80 backdrop-blur-sm border border-border/50 rounded-xl md:rounded-2xl text-center group flex flex-col items-center justify-center shadow-sm"
           >
-            <div className="w-10 h-10 md:w-12 md:h-12 mx-auto bg-background rounded-full flex items-center justify-center mb-3 md:mb-4 group-hover:scale-110 transition-transform text-muted">
-              <BoltIcon size={20} />
+            <div className="w-8 h-8 md:w-12 md:h-12 mx-auto bg-background rounded-full flex items-center justify-center mb-2 md:mb-4 group-hover:scale-110 transition-transform text-muted">
+              <BoltIcon size={18} className="md:w-5 md:h-5" />
             </div>
-            <h4 className="font-bold text-foreground">{item.name}</h4>
-            <p className="text-sm text-muted mt-1">{item.type}</p>
+            <h4 className="font-bold text-foreground text-[13px] md:text-base leading-tight md:leading-normal">{item.name}</h4>
+            <p className="text-[11px] md:text-sm text-muted mt-1 leading-tight md:leading-normal">{item.type}</p>
           </motion.div>
         ))}
-      </BentoGrid>
+      </div>
     </FadeInView>
   );
 }

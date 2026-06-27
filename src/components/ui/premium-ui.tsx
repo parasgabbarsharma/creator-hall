@@ -123,32 +123,3 @@ export function TextReveal({ text, className }: { text: string, className?: stri
   );
 }
 
-// 7. Bento Grid System
-export function BentoGrid({ children, className }: { children: React.ReactNode, className?: string }) {
-  return (
-    <div className={cn("grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6 w-full max-w-7xl mx-auto", className)}>
-      {children}
-    </div>
-  );
-}
-
-export function BentoItem({ children, className, colSpan = 1 }: { children: React.ReactNode, className?: string, colSpan?: number }) {
-  return (
-    <motion.div
-      initial={{ opacity: 0, scale: 0.95 }}
-      whileInView={{ opacity: 1, scale: 1 }}
-      viewport={{ once: true }}
-      whileHover={{ scale: 1.02 }}
-      transition={{ type: "spring", stiffness: 300, damping: 20 }}
-      className={cn(
-        "rounded-2xl border border-border/50 bg-surface/80 backdrop-blur-md p-5 md:p-6 shadow-sm overflow-hidden relative group transition-colors hover:border-accent/30",
-        colSpan === 2 && "md:col-span-2",
-        colSpan === 3 && "md:col-span-3",
-        className
-      )}
-    >
-      <div className="absolute inset-0 bg-gradient-to-br from-accent/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
-      <div className="relative z-10">{children}</div>
-    </motion.div>
-  );
-}
