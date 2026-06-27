@@ -7,19 +7,26 @@ type SessionPayload = {
   exp: number;
 };
 
-function base64UrlEncode(value: string | Buffer | Uint8Array): string {
-  if (Buffer.isBuffer(value)) {
-    return value.toString('base64url');
+function base64UrlEncode(bytes: Uint8Array): string {
+  let binary = "";
+  for (let i = 0; i < bytes.byteLength; i++) {
+    binary += String.fromCharCode(bytes[i]!);
   }
-  const bytes =
-    typeof value === "string"
-      ? Buffer.from(value, 'utf8')
-      : Buffer.from(value);
-  return bytes.toString('base64url');
+  const base64 = btoa(binary);
+  return base64.replace(/\+/g, "-").replace(/\//g, "_").replace(/=+$/, "");
 }
 
 function base64UrlDecode(value: string): string {
-  return Buffer.from(value, 'base64url').toString('utf8');
+  let base64 = value.replace(/-/g, "+").replace(/_/g, "/");
+  while (base64.length % 4) {
+    base64 += "=";
+  }
+  const binary = atob(base64);
+  const bytes = new Uint8Array(binary.length);
+  for (let i = 0; i < binary.length; i++) {
+    bytes[i] = binary.charCodeAt(i);
+  }
+  return new TextDecoder().decode(bytes);
 }
 
 async function sign(value: string, secret: string): Promise<string> {
@@ -31,7 +38,7 @@ async function sign(value: string, secret: string): Promise<string> {
     ["sign"]
   );
   const signature = await crypto.subtle.sign("HMAC", key, new TextEncoder().encode(value));
-  return base64UrlEncode(Buffer.from(signature));
+  return base64UrlEncode(new Uint8Array(signature));
 }
 
 function constantTimeEqual(a: string, b: string): boolean {
@@ -58,7 +65,7 @@ export async function createSessionToken(secret: string, now = Date.now()): Prom
     iat: issuedAt,
     exp: issuedAt + SESSION_MAX_AGE_SECONDS,
   };
-  const encodedPayload = base64UrlEncode(JSON.stringify(payload));
+  const encodedPayload = base64UrlEncode(new TextEncoder().encode(JSON.stringify(payload)));
   const signature = await sign(encodedPayload, secret);
   return `${encodedPayload}.${signature}`;
 }

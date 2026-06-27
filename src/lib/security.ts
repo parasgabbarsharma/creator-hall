@@ -59,7 +59,14 @@ export function getClientIp(request: Request): string {
 
 export function assertSameOrigin(request: Request): void {
   const origin = request.headers.get("origin");
-  const host = request.headers.get("host"); // DO NOT trust x-forwarded-host for CSRF
+  let host = request.headers.get("host");
+  
+  if (process.env.TRUST_PROXY === "true") {
+    const forwardedHost = request.headers.get("x-forwarded-host");
+    if (forwardedHost) {
+      host = forwardedHost.split(",")[0]?.trim() || host;
+    }
+  }
 
   if (!origin || !host) {
     throw new HttpError(403, "Invalid request origin");
