@@ -124,7 +124,7 @@ export function SpotlightHero({ children, className }: { children: React.ReactNo
           background: useMotionTemplate`
             radial-gradient(
               800px circle at ${mouseX}px ${mouseY}px,
-              rgba(239, 68, 68, 0.1),
+              rgba(150, 150, 150, 0.08),
               transparent 80%
             )
           `,

@@ -138,9 +138,9 @@ export function HomeClient({
                 )}
               </div>
               <motion.div 
-                animate={{ scale: [1, 1.1, 1], opacity: [0.2, 0.4, 0.2] }}
+                animate={{ scale: [1, 1.1, 1], opacity: [0.1, 0.2, 0.1] }}
                 transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
-                className="absolute inset-0 rounded-full bg-accent blur-2xl" 
+                className="absolute inset-0 rounded-full bg-foreground/20 blur-2xl -z-10" 
               />
             </motion.div>
             
