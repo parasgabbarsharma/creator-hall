@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
+import { cn } from "@/lib/utils";
 
 import { motion, AnimatePresence } from "framer-motion";
 import { SOCIAL_LINKS, CONTACT_INFO } from "@/lib/config";
@@ -12,6 +13,12 @@ const PLATFORM_ICONS = {
   youtube: YouTubeIcon,
   instagram: InstagramIcon,
   facebook: FacebookIcon,
+} as const;
+
+const PLATFORM_HOVER_COLORS = {
+  youtube: "hover:text-[#ff0000]",
+  instagram: "hover:text-[#E1306C]",
+  facebook: "hover:text-[#1877F2]",
 } as const;
 
 export function TopNavBar() {
@@ -75,8 +82,9 @@ export function TopNavBar() {
             <div className="hidden md:flex items-center gap-6">
               {SOCIAL_LINKS.map((link) => {
                 const Icon = PLATFORM_ICONS[link.platform];
+                const hoverClass = PLATFORM_HOVER_COLORS[link.platform];
                 return (
-                  <a key={link.href} href={link.href} target="_blank" rel="noopener noreferrer" className="text-muted hover:text-accent transition-colors" title={link.label}>
+                  <a key={link.href} href={link.href} target="_blank" rel="noopener noreferrer" className={cn("text-muted transition-colors", hoverClass)} title={link.label}>
                     <Icon size={20} />
                   </a>
                 );
@@ -131,6 +139,7 @@ export function TopNavBar() {
             <div className="flex flex-col items-center justify-center gap-6 p-8 pb-10">
               {SOCIAL_LINKS.map((link, i) => {
                 const Icon = PLATFORM_ICONS[link.platform];
+                const hoverClass = PLATFORM_HOVER_COLORS[link.platform];
                 return (
                   <motion.a 
                     initial={{ opacity: 0, y: 20 }}
@@ -140,7 +149,7 @@ export function TopNavBar() {
                     href={link.href} 
                     target="_blank" 
                     rel="noopener noreferrer" 
-                    className="flex items-center gap-4 text-2xl font-heading font-semibold hover:text-accent transition-colors" 
+                    className={cn("flex items-center gap-4 text-2xl font-heading font-semibold transition-colors", hoverClass)} 
                     onClick={() => setMenuOpen(false)}
                   >
                     <Icon size={32} /> {link.label}
