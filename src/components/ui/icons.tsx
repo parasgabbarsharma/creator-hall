@@ -43,14 +43,6 @@ export function DashboardIcon({ className, size = 20 }: IconProps) {
   );
 }
 
-export function AnalyticsIcon({ className, size = 20 }: IconProps) {
-  return (
-    <svg viewBox="0 0 24 24" width={size} height={size} className={className} fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-      <path d="M18 20V10" /><path d="M12 20V4" /><path d="M6 20v-6" />
-    </svg>
-  );
-}
-
 export function GlobeIcon({ className, size = 20 }: IconProps) {
   return (
     <svg viewBox="0 0 24 24" width={size} height={size} className={className} fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -115,13 +107,7 @@ export function LinkIcon({ className, size = 20 }: IconProps) {
   );
 }
 
-export function ChevronRightIcon({ className, size = 20 }: IconProps) {
-  return (
-    <svg viewBox="0 0 24 24" width={size} height={size} className={className} fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-      <path d="m9 18 6-6-6-6" />
-    </svg>
-  );
-}
+
 
 export function BoltIcon({ className, size = 20 }: IconProps) {
   return (
