@@ -4,6 +4,7 @@ import { motion, useInView } from "framer-motion";
 import { useRef, useState } from "react";
 import { YouTubeIcon, BoltIcon } from "@/components/ui/icons";
 import { Button } from "@/components/ui/button";
+import { BentoGrid, BentoItem, TextReveal } from "@/components/ui/premium-ui";
 
 // 1. FadeInView Wrapper
 export function FadeInView({ children, delay = 0, className = "" }: { children: React.ReactNode; delay?: number; className?: string }) {
@@ -51,12 +52,20 @@ function Counter({ value, label }: { value: string; label: string }) {
 
 export function StatsSection({ subscriberCount, viewCount, videoCount }: { subscriberCount: string, viewCount: string, videoCount: string }) {
   return (
-    <FadeInView className="px-0 w-full">
-      <div className="grid grid-cols-2 md:grid-cols-3 gap-4 md:gap-6 my-24 relative">
+    <FadeInView className="px-4 w-full">
+      <div className="my-24 relative max-w-7xl mx-auto">
         <div className="absolute inset-0 bg-accent/5 blur-3xl rounded-full -z-10" />
-        <Counter value={formatCompactNumber(subscriberCount)} label="Subscribers" />
-        <Counter value={formatCompactNumber(viewCount)} label="Total Views" />
-        <Counter value={formatCompactNumber(videoCount)} label="Videos" />
+        <BentoGrid>
+          <BentoItem className="flex flex-col items-center justify-center text-center">
+            <Counter value={formatCompactNumber(subscriberCount)} label="Subscribers" />
+          </BentoItem>
+          <BentoItem className="flex flex-col items-center justify-center text-center">
+            <Counter value={formatCompactNumber(viewCount)} label="Total Views" />
+          </BentoItem>
+          <BentoItem className="flex flex-col items-center justify-center text-center">
+            <Counter value={formatCompactNumber(videoCount)} label="Videos" />
+          </BentoItem>
+        </BentoGrid>
       </div>
     </FadeInView>
   );
@@ -197,9 +206,9 @@ export function GearGrid() {
   ];
 
   return (
-    <FadeInView className="px-0 w-full my-32">
+    <FadeInView className="px-4 w-full my-32">
       <h2 className="text-3xl font-heading font-bold text-center mb-12">The Studio Setup</h2>
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+      <BentoGrid>
         {gear.map((item, i) => (
           <motion.div 
             key={i}
@@ -213,7 +222,7 @@ export function GearGrid() {
             <p className="text-sm text-muted mt-1">{item.type}</p>
           </motion.div>
         ))}
-      </div>
+      </BentoGrid>
     </FadeInView>
   );
 }
@@ -229,8 +238,10 @@ export function Testimonials() {
   return (
     <FadeInView className="px-4">
       <section className="my-32 text-center">
-        <h2 className="text-4xl font-heading font-bold mb-12 tracking-tight">What The Fans Say</h2>
-        <div className="grid md:grid-cols-3 gap-6 w-full">
+        <h2 className="text-4xl md:text-5xl font-heading font-extrabold mb-12 tracking-tight flex justify-center">
+          <TextReveal text="What The Fans Say" />
+        </h2>
+        <div className="grid md:grid-cols-3 gap-6 w-full max-w-7xl mx-auto">
           {testimonials.map((t, i) => (
             <motion.div 
               key={i}

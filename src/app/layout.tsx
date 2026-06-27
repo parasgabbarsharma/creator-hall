@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Inter, Plus_Jakarta_Sans } from "next/font/google";
 import "@/styles/globals.css";
 import { ErrorBoundary } from "@/components/error-boundary";
+import { ScrollProgress } from "@/components/ui/premium-ui";
 
 const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
 const jakarta = Plus_Jakarta_Sans({ subsets: ["latin"], variable: "--font-jakarta" });
@@ -22,6 +23,7 @@ export default function RootLayout({
   return (
     <html lang="en" className="light">
       <body className={`${inter.variable} ${jakarta.variable} font-sans min-h-screen bg-background text-foreground antialiased selection:bg-accent/10 selection:text-accent`}>
+        <ScrollProgress />
         <ErrorBoundary>
           <a
             href="#main-content"

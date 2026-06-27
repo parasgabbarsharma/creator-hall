@@ -11,6 +11,7 @@ import { YouTubeIcon, InstagramIcon, BoltIcon, SearchOffIcon, PlayIcon, LoadingI
 import { StatsSection, ScrollingMarquee, Testimonials, ConnectCTA, FadeInView, HeroMeshBackground, FAQSection, SubGoal, GearGrid, AboutChannelSection } from "./animated-sections";
 import { isYouTubeShortUrl } from "@/lib/video-url";
 import { CREATOR_BIO } from "@/lib/config";
+import { SpotlightHero, GradientText, Sparkles, MagneticWrapper } from "@/components/ui/premium-ui";
 
 interface HomeClientProps {
   youtubeLong: Video[];
@@ -114,6 +115,7 @@ export function HomeClient({
 
   return (
     <div className="relative overflow-hidden">
+      <SpotlightHero>
       <HeroMeshBackground />
       
       {!searchQuery && (
@@ -146,9 +148,12 @@ export function HomeClient({
               initial={{ y: 20, opacity: 0 }}
               animate={{ y: 0, opacity: 1 }}
               transition={{ duration: 0.6, delay: 0.2, ease: "easeOut" }}
-              className="text-4xl md:text-5xl font-heading font-bold text-foreground mt-8 tracking-tight"
+              className="text-4xl md:text-6xl font-heading font-extrabold text-foreground mt-8 tracking-tighter"
             >
-              {channelName}
+              <Sparkles>
+                {channelName.split(" ").slice(0, -1).join(" ")}{" "}
+                <GradientText text={channelName.split(" ").slice(-1)[0] || ""} />
+              </Sparkles>
             </motion.h1>
             
             <motion.p
@@ -170,21 +175,24 @@ export function HomeClient({
                 <PlayIcon size={18} className="text-muted" />
                 <span className="text-[15px] font-semibold text-foreground">{totalVideos} <span className="font-normal text-muted">Videos</span></span>
               </div>
-              <motion.a 
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-                href="https://www.youtube.com/@parassharmagabbar/shorts" 
-                target="_blank" 
-                rel="noopener noreferrer" 
-                className="flex items-center gap-2 px-6 py-2.5 bg-accent text-white rounded-full shadow-lg shadow-accent/20 hover:shadow-accent/40 hover:bg-accent-hover transition-all font-semibold text-[15px]"
-              >
-                <YouTubeIcon size={18} />
-                Subscribe
-              </motion.a>
+              <MagneticWrapper>
+                <motion.a 
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                  href="https://www.youtube.com/@parassharmagabbar/shorts" 
+                  target="_blank" 
+                  rel="noopener noreferrer" 
+                  className="flex items-center gap-2 px-8 py-3.5 bg-accent text-white rounded-full shadow-lg shadow-accent/30 hover:shadow-accent/50 hover:bg-accent-hover transition-all font-bold text-[16px] tracking-wide"
+                >
+                  <YouTubeIcon size={20} />
+                  Subscribe Now
+                </motion.a>
+              </MagneticWrapper>
             </motion.div>
           </div>
         </FadeInView>
       )}
+      </SpotlightHero>
 
       {!searchQuery && <SubGoal subscriberCount={subscriberCount} />}
       {!searchQuery && <StatsSection subscriberCount={subscriberCount} viewCount={viewCount} videoCount={videoCount} />}

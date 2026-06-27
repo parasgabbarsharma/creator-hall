@@ -8,6 +8,7 @@ import { motion } from "framer-motion";
 import { Avatar } from "@/components/ui/avatar";
 import { Skeleton } from "@/components/ui/skeleton";
 import { YouTubeIcon, InstagramIcon, PlayIcon } from "@/components/ui/icons";
+import { HoverTiltCard } from "@/components/ui/premium-ui";
 
 interface VideoCardProps {
   video: Video;
@@ -18,6 +19,7 @@ export function VideoCard({ video, priority = false }: VideoCardProps) {
   const isShort = isYouTubeShortUrl(video.url) || video.platform === "INSTAGRAM";
 
   return (
+    <HoverTiltCard>
     <motion.article 
       initial={{ opacity: 0, y: 20 }}
       whileInView={{ opacity: 1, y: 0 }}
@@ -87,6 +89,7 @@ export function VideoCard({ video, priority = false }: VideoCardProps) {
         </div>
       </a>
     </motion.article>
+    </HoverTiltCard>
   );
 }
 
