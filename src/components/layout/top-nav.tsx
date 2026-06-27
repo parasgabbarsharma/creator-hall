@@ -7,7 +7,7 @@ import { cn } from "@/lib/utils";
 
 import { motion, AnimatePresence } from "framer-motion";
 import { SOCIAL_LINKS, CONTACT_INFO } from "@/lib/config";
-import { PlayIcon, SearchIcon, YouTubeIcon, InstagramIcon, FacebookIcon, WhatsAppIcon } from "@/components/ui/icons";
+import { PlayIcon, SearchIcon, YouTubeIcon, InstagramIcon, FacebookIcon, WhatsAppIcon, PhoneIcon } from "@/components/ui/icons";
 
 const PLATFORM_ICONS = {
   youtube: YouTubeIcon,
@@ -89,12 +89,11 @@ export function TopNavBar() {
                   </a>
                 );
               })}
-              <div className="w-[1px] h-6 bg-border/60 mx-2" />
-              <a href={CONTACT_INFO.whatsapp} target="_blank" rel="noopener noreferrer" className="flex items-center justify-center bg-green-500 hover:bg-green-600 text-white rounded-full w-9 h-9 shadow-sm shadow-green-500/20 transition-all hover:scale-105" title="Chat on WhatsApp">
-                <WhatsAppIcon size={18} />
+              <a href={CONTACT_INFO.whatsapp} target="_blank" rel="noopener noreferrer" className="text-muted transition-colors hover:text-[#25D366]" title="Chat on WhatsApp">
+                <WhatsAppIcon size={20} />
               </a>
-              <Link href="/contact" className="text-[14px] font-semibold text-foreground hover:text-accent transition-colors">
-                Contact
+              <Link href="/contact" className="text-muted transition-colors hover:text-foreground" title="Contact">
+                <PhoneIcon size={20} />
               </Link>
             </div>
             <button
@@ -156,6 +155,28 @@ export function TopNavBar() {
                   </motion.a>
                 );
               })}
+              <motion.a 
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0, transition: { delay: 0.2 + (SOCIAL_LINKS.length * 0.1), duration: 0.4 } }}
+                exit={{ opacity: 0, y: 10, transition: { duration: 0.2 } }}
+                href={CONTACT_INFO.whatsapp} 
+                target="_blank" 
+                rel="noopener noreferrer" 
+                className="flex items-center gap-4 text-2xl font-heading font-semibold transition-colors hover:text-[#25D366]" 
+                onClick={() => setMenuOpen(false)}
+              >
+                <WhatsAppIcon size={32} /> WhatsApp
+              </motion.a>
+              <Link href="/contact" onClick={() => setMenuOpen(false)}>
+                <motion.div 
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0, transition: { delay: 0.2 + ((SOCIAL_LINKS.length + 1) * 0.1), duration: 0.4 } }}
+                  exit={{ opacity: 0, y: 10, transition: { duration: 0.2 } }}
+                  className="flex items-center gap-4 text-2xl font-heading font-semibold transition-colors hover:text-foreground" 
+                >
+                  <PhoneIcon size={32} /> Contact
+                </motion.div>
+              </Link>
             </div>
           </motion.div>
         )}
