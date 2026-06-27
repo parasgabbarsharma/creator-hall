@@ -11,7 +11,7 @@ import { YouTubeIcon, InstagramIcon, BoltIcon, SearchOffIcon, PlayIcon, LoadingI
 import { StatsSection, ScrollingMarquee, Testimonials, ConnectCTA, FadeInView, HeroMeshBackground, FAQSection, SubGoal, GearGrid, AboutChannelSection } from "./animated-sections";
 import { isYouTubeShortUrl } from "@/lib/video-url";
 import { CREATOR_BIO } from "@/lib/config";
-import { GradientText, Sparkles, MagneticWrapper } from "@/components/ui/premium-ui";
+import { GradientText, MagneticWrapper } from "@/components/ui/premium-ui";
 
 interface HomeClientProps {
   youtubeLong: Video[];
@@ -149,10 +149,8 @@ export function HomeClient({
               transition={{ duration: 0.6, delay: 0.2, ease: "easeOut" }}
               className="text-4xl md:text-6xl font-heading font-extrabold text-foreground mt-8 tracking-tighter"
             >
-              <Sparkles>
                 {channelName.split(" ").slice(0, -1).join(" ")}{" "}
                 <GradientText text={channelName.split(" ").slice(-1)[0] || ""} />
-              </Sparkles>
             </motion.h1>
             
             <motion.p

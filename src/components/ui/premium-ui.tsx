@@ -1,7 +1,7 @@
 "use client";
 
-import React, { useRef, useState, useEffect } from "react";
-import { motion, useScroll, useSpring, useTransform, useMotionValue, useMotionTemplate } from "framer-motion";
+import React, { useRef, useState } from "react";
+import { motion, useScroll, useSpring, useTransform, useMotionValue } from "framer-motion";
 import { cn } from "@/lib/utils";
 
 // 1. Scroll Progress Bar
@@ -102,39 +102,6 @@ export function GradientText({ text, className }: { text: string, className?: st
   );
 }
 
-// 5. Spotlight Background for Hero
-export function SpotlightHero({ children, className }: { children: React.ReactNode, className?: string }) {
-  const mouseX = useMotionValue(0);
-  const mouseY = useMotionValue(0);
-
-  function handleMouseMove({ currentTarget, clientX, clientY }: React.MouseEvent) {
-    const { left, top } = currentTarget.getBoundingClientRect();
-    mouseX.set(clientX - left);
-    mouseY.set(clientY - top);
-  }
-
-  return (
-    <div
-      className={cn("relative group w-full", className)}
-      onMouseMove={handleMouseMove}
-    >
-      <motion.div
-        className="pointer-events-none absolute -inset-px opacity-0 transition duration-300 group-hover:opacity-100 -z-10"
-        style={{
-          background: useMotionTemplate`
-            radial-gradient(
-              800px circle at ${mouseX}px ${mouseY}px,
-              rgba(150, 150, 150, 0.08),
-              transparent 80%
-            )
-          `,
-        }}
-      />
-      {children}
-    </div>
-  );
-}
-
 // 6. Text Reveal on Scroll
 export function TextReveal({ text, className }: { text: string, className?: string }) {
   const words = text.split(" ");
@@ -183,43 +150,5 @@ export function BentoItem({ children, className, colSpan = 1 }: { children: Reac
       <div className="absolute inset-0 bg-gradient-to-br from-accent/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
       <div className="relative z-10">{children}</div>
     </motion.div>
-  );
-}
-
-// 8. Sparkles Effect
-export function Sparkles({ children, className }: { children: React.ReactNode, className?: string }) {
-  const [sparkles, setSparkles] = useState<{id: number, x: string, y: string, size: string}[]>([]);
-
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setSparkles(current => [
-        ...current.slice(-5),
-        {
-          id: Date.now(),
-          x: Math.random() * 100 + "%",
-          y: Math.random() * 100 + "%",
-          size: Math.random() * 10 + 5 + "px"
-        }
-      ]);
-    }, 400);
-    return () => clearInterval(interval);
-  }, []);
-
-  return (
-    <div className={cn("relative inline-block", className)}>
-      {sparkles.map(sparkle => (
-        <motion.div
-          key={sparkle.id}
-          initial={{ opacity: 0, scale: 0, rotate: 0 }}
-          animate={{ opacity: [0, 1, 0], scale: [0, 1, 0], rotate: 180 }}
-          transition={{ duration: 1.5, ease: "easeOut" }}
-          className="absolute pointer-events-none text-accent z-50"
-          style={{ left: sparkle.x, top: sparkle.y, fontSize: sparkle.size }}
-        >
-          ✦
-        </motion.div>
-      ))}
-      {children}
-    </div>
   );
 }
