@@ -135,8 +135,9 @@ export function TopNavBar() {
             aria-modal="true"
             className="fixed top-[72px] left-0 right-0 z-40 bg-foreground text-background shadow-2xl md:hidden overflow-hidden"
           >
-            <div className="flex flex-col items-center justify-center gap-6 p-8 pb-10">
-              {SOCIAL_LINKS.map((link, i) => {
+            <div className="flex flex-col items-center justify-center p-8 pb-10">
+              <div className="flex flex-col items-start gap-6">
+                {SOCIAL_LINKS.map((link, i) => {
                 const Icon = PLATFORM_ICONS[link.platform];
                 const hoverClass = PLATFORM_HOVER_COLORS[link.platform];
                 return (
@@ -148,10 +149,10 @@ export function TopNavBar() {
                     href={link.href} 
                     target="_blank" 
                     rel="noopener noreferrer" 
-                    className={cn("flex items-center gap-4 text-2xl font-heading font-semibold transition-colors", hoverClass)} 
+                    className={cn("flex items-center gap-5 text-2xl font-heading font-semibold transition-colors", hoverClass)} 
                     onClick={() => setMenuOpen(false)}
                   >
-                    <Icon size={32} /> {link.label}
+                    <div className="w-10 flex justify-center"><Icon size={32} /></div> {link.label}
                   </motion.a>
                 );
               })}
@@ -162,21 +163,22 @@ export function TopNavBar() {
                 href={CONTACT_INFO.whatsapp} 
                 target="_blank" 
                 rel="noopener noreferrer" 
-                className="flex items-center gap-4 text-2xl font-heading font-semibold transition-colors hover:text-[#25D366]" 
+                className="flex items-center gap-5 text-2xl font-heading font-semibold transition-colors hover:text-[#25D366]" 
                 onClick={() => setMenuOpen(false)}
               >
-                <WhatsAppIcon size={32} /> WhatsApp
+                <div className="w-10 flex justify-center"><WhatsAppIcon size={32} /></div> WhatsApp
               </motion.a>
               <Link href="/contact" onClick={() => setMenuOpen(false)}>
                 <motion.div 
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0, transition: { delay: 0.2 + ((SOCIAL_LINKS.length + 1) * 0.1), duration: 0.4 } }}
                   exit={{ opacity: 0, y: 10, transition: { duration: 0.2 } }}
-                  className="flex items-center gap-4 text-2xl font-heading font-semibold transition-colors hover:text-foreground" 
+                  className="flex items-center gap-5 text-2xl font-heading font-semibold transition-colors hover:text-foreground" 
                 >
-                  <PhoneIcon size={32} /> Contact
+                  <div className="w-10 flex justify-center"><PhoneIcon size={32} /></div> Contact
                 </motion.div>
               </Link>
+              </div>
             </div>
           </motion.div>
         )}
