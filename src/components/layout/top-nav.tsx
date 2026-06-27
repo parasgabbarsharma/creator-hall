@@ -49,19 +49,19 @@ export function TopNavBar() {
         transition={{ type: "spring", stiffness: 300, damping: 30 }}
         className="sticky top-0 z-50 bg-white/95 backdrop-blur-sm border-b border-border"
       >
-        <div className="w-full flex items-center justify-between gap-4 h-16 px-4 md:px-6">
+        <div className="w-full flex items-center justify-between gap-3 h-[72px] md:h-20 px-4 md:px-6">
           <Link href="/" className="flex items-center gap-2.5 shrink-0 group sm:min-w-[150px]">
             <div className="w-8 h-8 rounded-full bg-accent flex items-center justify-center text-white shadow-sm transition-transform duration-300 group-hover:scale-105">
               <PlayIcon size={14} className="ml-0.5" />
             </div>
             <div className="font-heading font-bold tracking-tight text-foreground flex flex-col sm:flex-row sm:items-center sm:gap-1.5 uppercase sm:normal-case">
-              <span className="text-[9px] sm:text-xl leading-[1] sm:leading-normal">Paras</span>
-              <span className="text-[9px] sm:text-xl leading-[1] sm:leading-normal">Sharma</span>
-              <span className="text-[9px] sm:text-xl leading-[1] sm:leading-normal">Gabbar</span>
+              <span className="text-[13px] sm:text-xl leading-[1.1] sm:leading-normal">Paras</span>
+              <span className="text-[13px] sm:text-xl leading-[1.1] sm:leading-normal">Sharma</span>
+              <span className="text-[13px] sm:text-xl leading-[1.1] sm:leading-normal">Gabbar</span>
             </div>
           </Link>
 
-          <div className="flex-1 max-w-2xl mx-auto px-2 md:px-8">
+          <div className="flex-1 max-w-[160px] sm:max-w-2xl mx-auto px-1 md:px-8">
             <form onSubmit={handleSearch} className="w-full relative group" role="search">
               <label htmlFor="nav-search" className="sr-only">Search videos</label>
               <span className="absolute inset-y-0 left-3 flex items-center pointer-events-none text-muted transition-colors group-focus-within:text-accent">
