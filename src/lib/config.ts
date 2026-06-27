@@ -1,6 +1,3 @@
-export const SITE_NAME = "Paras Gabbar Sharma";
-export const SITE_DESCRIPTION =
-  "Desi comedy, relatable storytelling, and daily vlogs by Paras Gabbar Sharma.";
 
 export const CREATOR_NAME = "Paras Sharma";
 export const CREATOR_NICKNAME = "Gabbar";
@@ -33,11 +30,5 @@ export const CONTACT_INFO = {
 
 export const DEFAULT_PAGE_SIZE = 24;
 export const ADMIN_PAGE_SIZE = 50;
-export const API_PAGE_SIZE_MAX = 50;
 
-export type PageResult<T> = {
-  items: T[];
-  total: number;
-  hasMore: boolean;
-  nextCursor?: string;
-};
+
