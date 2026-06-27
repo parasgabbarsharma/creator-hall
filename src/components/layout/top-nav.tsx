@@ -47,7 +47,7 @@ export function TopNavBar() {
         initial={{ y: -100 }}
         animate={{ y: 0 }}
         transition={{ type: "spring", stiffness: 300, damping: 30 }}
-        className="sticky top-0 z-50 bg-white/95 backdrop-blur-sm border-b border-border"
+        className="sticky top-0 z-50 bg-background border-b border-border"
       >
         <div className="w-full flex items-center justify-between gap-3 h-[72px] md:h-20 px-4 md:px-6">
           <Link href="/" className="flex items-center gap-2.5 shrink-0 group sm:min-w-[150px]">
