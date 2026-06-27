@@ -18,6 +18,11 @@ export const SOCIAL_LINKS = [
     label: "Instagram",
     platform: "instagram" as const,
   },
+  {
+    href: "https://www.facebook.com/share/18d4ZP7mQi/",
+    label: "Facebook",
+    platform: "facebook" as const,
+  },
 ] as const;
 
 export const DEFAULT_PAGE_SIZE = 24;

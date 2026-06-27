@@ -6,11 +6,12 @@ import { useRouter } from "next/navigation";
 
 import { motion, AnimatePresence } from "framer-motion";
 import { SOCIAL_LINKS } from "@/lib/config";
-import { PlayIcon, SearchIcon, YouTubeIcon, InstagramIcon } from "@/components/ui/icons";
+import { PlayIcon, SearchIcon, YouTubeIcon, InstagramIcon, FacebookIcon } from "@/components/ui/icons";
 
 const PLATFORM_ICONS = {
   youtube: YouTubeIcon,
   instagram: InstagramIcon,
+  facebook: FacebookIcon,
 } as const;
 
 export function TopNavBar() {

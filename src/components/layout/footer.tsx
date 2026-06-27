@@ -1,10 +1,11 @@
 import Link from "next/link";
 import { SOCIAL_LINKS, CREATOR_NAME, CREATOR_NICKNAME } from "@/lib/config";
-import { PlayIcon, YouTubeIcon, InstagramIcon } from "@/components/ui/icons";
+import { PlayIcon, YouTubeIcon, InstagramIcon, FacebookIcon } from "@/components/ui/icons";
 
 const PLATFORM_ICONS = {
   youtube: YouTubeIcon,
   instagram: InstagramIcon,
+  facebook: FacebookIcon,
 } as const;
 
 export function Footer() {
